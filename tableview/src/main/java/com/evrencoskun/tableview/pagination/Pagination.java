@@ -100,9 +100,10 @@ public class Pagination implements IPagination {
                 .getRowHeaderRecyclerView().getAdapter();
         this.mCellRecyclerViewAdapter = (CellRecyclerViewAdapter) tableView.getCellRecyclerView()
                 .getAdapter();
-        tableView.getColumnSortHandler().addColumnSortStateChangedListener(columnSortStateChangedListener);
+        // TODO handle this later
+//        tableView.getColumnSortHandler().addColumnSortStateChangedListener(columnSortStateChangedListener);
         tableView.getAdapter().addAdapterDataSetChangedListener(adapterDataSetChangedListener);
-        tableView.getFilterHandler().addFilterChangedListener(filterChangedListener);
+//        tableView.getFilterHandler().addFilterChangedListener(filterChangedListener);
         this.originalCellData = tableView.getAdapter().getCellRecyclerViewAdapter().getItems();
         this.originalRowData = tableView.getAdapter().getRowHeaderRecyclerViewAdapter().getItems();
         this.currentPage = 1;

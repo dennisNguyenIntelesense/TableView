@@ -40,7 +40,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.evrencoskun.tableview.TableView;
-import com.evrencoskun.tableview.filter.Filter;
+//import com.evrencoskun.tableview.filter.Filter;
 import com.evrencoskun.tableview.pagination.Pagination;
 import com.evrencoskun.tableviewsample.tableview.TableViewAdapter;
 import com.evrencoskun.tableviewsample.tableview.TableViewListener;
@@ -54,8 +54,8 @@ public class MainFragment extends Fragment {
     private ImageButton previousButton, nextButton;
     private TextView tablePaginationDetails;
     private TableView mTableView;
-    @Nullable
-    private Filter mTableFilter; // This is used for filtering the table.
+//    @Nullable
+//    private Filter mTableFilter; // This is used for filtering the table.
     @Nullable
     private Pagination mPagination; // This is used for paginating the table.
 
@@ -102,7 +102,7 @@ public class MainFragment extends Fragment {
         initializeTableView();
 
         if (mPaginationEnabled) {
-            mTableFilter = new Filter(mTableView); // Create an instance of a Filter and pass the
+//            mTableFilter = new Filter(mTableView); // Create an instance of a Filter and pass the
             // created TableView.
 
             // Create an instance for the TableView pagination and pass the created TableView.
@@ -147,28 +147,28 @@ public class MainFragment extends Fragment {
 
     }
 
-    public void filterTable(@NonNull String filter) {
-        // Sets a filter to the table, this will filter ALL the columns.
-        if (mTableFilter != null) {
-            mTableFilter.set(filter);
-        }
-    }
-
-    public void filterTableForMood(@NonNull String filter) {
-        // Sets a filter to the table, this will only filter a specific column.
-        // In the example data, this will filter the mood column.
-        if (mTableFilter != null) {
-            mTableFilter.set(TableViewModel.MOOD_COLUMN_INDEX, filter);
-        }
-    }
-
-    public void filterTableForGender(@NonNull String filter) {
-        // Sets a filter to the table, this will only filter a specific column.
-        // In the example data, this will filter the gender column.
-        if (mTableFilter != null) {
-            mTableFilter.set(TableViewModel.GENDER_COLUMN_INDEX, filter);
-        }
-    }
+//    public void filterTable(@NonNull String filter) {
+//        // Sets a filter to the table, this will filter ALL the columns.
+//        if (mTableFilter != null) {
+//            mTableFilter.set(filter);
+//        }
+//    }
+//
+//    public void filterTableForMood(@NonNull String filter) {
+//        // Sets a filter to the table, this will only filter a specific column.
+//        // In the example data, this will filter the mood column.
+//        if (mTableFilter != null) {
+//            mTableFilter.set(TableViewModel.MOOD_COLUMN_INDEX, filter);
+//        }
+//    }
+//
+//    public void filterTableForGender(@NonNull String filter) {
+//        // Sets a filter to the table, this will only filter a specific column.
+//        // In the example data, this will filter the gender column.
+//        if (mTableFilter != null) {
+//            mTableFilter.set(TableViewModel.GENDER_COLUMN_INDEX, filter);
+//        }
+//    }
 
     // The following four methods below: nextTablePage(), previousTablePage(),
     // goToTablePage(int page) and setTableItemsPerPage(int itemsPerPage)
@@ -236,12 +236,12 @@ public class MainFragment extends Fragment {
             if (position > 0) {
 
                 String filter = Integer.toString(position);
-
-                if (parent == moodFilter) {
-                    filterTableForMood(filter);
-                } else if (parent == genderFilter) {
-                    filterTableForGender(filter);
-                }
+//
+//                if (parent == moodFilter) {
+//                    filterTableForMood(filter);
+//                } else if (parent == genderFilter) {
+//                    filterTableForGender(filter);
+//                }
             }
         }
 
@@ -259,7 +259,7 @@ public class MainFragment extends Fragment {
 
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
-            filterTable(String.valueOf(s));
+//            filterTable(String.valueOf(s));
         }
 
         @Override

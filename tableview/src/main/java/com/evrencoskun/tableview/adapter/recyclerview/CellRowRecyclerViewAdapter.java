@@ -34,6 +34,8 @@ import com.evrencoskun.tableview.adapter.ITableAdapter;
 import com.evrencoskun.tableview.adapter.recyclerview.holder.AbstractViewHolder;
 import com.evrencoskun.tableview.adapter.recyclerview.holder.AbstractViewHolder.SelectionState;
 
+import java.util.List;
+
 /**
  * Created by evrencoskun on 10/06/2017.
  */

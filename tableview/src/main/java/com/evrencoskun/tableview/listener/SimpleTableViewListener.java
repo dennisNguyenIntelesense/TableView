@@ -51,7 +51,7 @@ public abstract class SimpleTableViewListener implements ITableViewListener {
 	public void onColumnHeaderDoubleClicked(@NonNull RecyclerView.ViewHolder columnHeaderView, int column) {
 	}
 
-	@Override
+//	@Override
 	public void onColumnHeaderLongPressed(@NonNull RecyclerView.ViewHolder columnHeaderView, int column) {
 	}
 

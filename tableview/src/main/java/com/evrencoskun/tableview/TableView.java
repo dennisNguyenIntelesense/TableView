@@ -37,10 +37,10 @@ import android.widget.FrameLayout;
 import com.evrencoskun.tableview.adapter.AbstractTableAdapter;
 import com.evrencoskun.tableview.adapter.recyclerview.CellRecyclerView;
 import com.evrencoskun.tableview.adapter.recyclerview.holder.AbstractViewHolder;
-import com.evrencoskun.tableview.filter.Filter;
-import com.evrencoskun.tableview.handler.ColumnSortHandler;
+//import com.evrencoskun.tableview.filter.Filter;
+//import com.evrencoskun.tableview.handler.ColumnSortHandler;
 import com.evrencoskun.tableview.handler.ColumnWidthHandler;
-import com.evrencoskun.tableview.handler.FilterHandler;
+//import com.evrencoskun.tableview.handler.FilterHandler;
 import com.evrencoskun.tableview.handler.PreferencesHandler;
 import com.evrencoskun.tableview.handler.ScrollHandler;
 import com.evrencoskun.tableview.handler.SelectionHandler;
@@ -95,14 +95,14 @@ public class TableView extends FrameLayout implements ITableView {
     private DividerItemDecoration mHorizontalItemDecoration;
     @NonNull
     private SelectionHandler mSelectionHandler;
-    @Nullable
-    private ColumnSortHandler mColumnSortHandler;
+//    @Nullable
+//    private ColumnSortHandler mColumnSortHandler;
     @NonNull
     private VisibilityHandler mVisibilityHandler;
     @NonNull
     private ScrollHandler mScrollHandler;
-    @Nullable
-    private FilterHandler mFilterHandler;
+//    @Nullable
+//    private FilterHandler mFilterHandler;
     @NonNull
     private PreferencesHandler mPreferencesHandler;
     @NonNull
@@ -168,7 +168,8 @@ public class TableView extends FrameLayout implements ITableView {
 
     private void initialDefaultValues(@Nullable AttributeSet attrs) {
         // Dimensions
-        mRowHeaderWidth = (int) getResources().getDimension(R.dimen.default_row_header_width);
+        // TODO change this back to not * 4
+        mRowHeaderWidth = (int) getResources().getDimension(R.dimen.default_row_header_width) * 4;
         mColumnHeaderHeight = (int) getResources().getDimension(R.dimen
                 .default_column_header_height);
 
@@ -196,6 +197,7 @@ public class TableView extends FrameLayout implements ITableView {
                 .TableView, 0, 0);
         try {
             // Dimensions
+
             mRowHeaderWidth = (int) a.getDimension(R.styleable.TableView_row_header_width,
                     mRowHeaderWidth);
             mColumnHeaderHeight = (int) a.getDimension(R.styleable
@@ -409,10 +411,10 @@ public class TableView extends FrameLayout implements ITableView {
             mCellRecyclerView.setAdapter(mTableAdapter.getCellRecyclerViewAdapter());
 
             // Create Sort Handler
-            mColumnSortHandler = new ColumnSortHandler(this);
+//            mColumnSortHandler = new ColumnSortHandler(this);
 
             // Create Filter Handler
-            mFilterHandler = new FilterHandler<>(this);
+//            mFilterHandler = new FilterHandler<>(this);
         }
     }
 
@@ -534,17 +536,17 @@ public class TableView extends FrameLayout implements ITableView {
         this.mTableViewListener = tableViewListener;
     }
 
-    @Override
-    public void sortColumn(int columnPosition, @NonNull SortState sortState) {
-        mIsSortable = true;
-        mColumnSortHandler.sort(columnPosition, sortState);
-    }
-
-    @Override
-    public void sortRowHeader(@NonNull SortState sortState) {
-        mIsSortable = true;
-        mColumnSortHandler.sortByRowHeader(sortState);
-    }
+//    @Override
+//    public void sortColumn(int columnPosition, @NonNull SortState sortState) {
+//        mIsSortable = true;
+//        mColumnSortHandler.sort(columnPosition, sortState);
+//    }
+//
+//    @Override
+//    public void sortRowHeader(@NonNull SortState sortState) {
+//        mIsSortable = true;
+//        mColumnSortHandler.sortByRowHeader(sortState);
+//    }
 
     @Override
     public void remeasureColumnWidth(int column) {
@@ -559,29 +561,29 @@ public class TableView extends FrameLayout implements ITableView {
     public AbstractTableAdapter getAdapter() {
         return mTableAdapter;
     }
+//
+//    @Override
+//    public void filter(@NonNull Filter filter) {
+//        mFilterHandler.filter(filter);
+//    }
+//
+//    @Nullable
+//    @Override
+//    public FilterHandler getFilterHandler() {
+//        return mFilterHandler;
+//    }
 
-    @Override
-    public void filter(@NonNull Filter filter) {
-        mFilterHandler.filter(filter);
-    }
-
-    @Nullable
-    @Override
-    public FilterHandler getFilterHandler() {
-        return mFilterHandler;
-    }
-
-    @NonNull
-    @Override
-    public SortState getSortingStatus(int column) {
-        return mColumnSortHandler.getSortingStatus(column);
-    }
-
-    @Nullable
-    @Override
-    public SortState getRowHeaderSortingStatus() {
-        return mColumnSortHandler.getRowHeaderSortingStatus();
-    }
+//    @NonNull
+//    @Override
+//    public SortState getSortingStatus(int column) {
+//        return mColumnSortHandler.getSortingStatus(column);
+//    }
+//
+//    @Nullable
+//    @Override
+//    public SortState getRowHeaderSortingStatus() {
+//        return mColumnSortHandler.getRowHeaderSortingStatus();
+//    }
 
     @Override
     public void scrollToColumnPosition(int column) {
@@ -702,11 +704,11 @@ public class TableView extends FrameLayout implements ITableView {
         return mSelectionHandler;
     }
 
-    @Nullable
-    @Override
-    public ColumnSortHandler getColumnSortHandler() {
-        return mColumnSortHandler;
-    }
+//    @Nullable
+//    @Override
+//    public ColumnSortHandler getColumnSortHandler() {
+//        return mColumnSortHandler;
+//    }
 
     @NonNull
     @Override

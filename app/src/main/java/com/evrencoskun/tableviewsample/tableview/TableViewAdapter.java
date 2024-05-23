@@ -120,22 +120,39 @@ public class TableViewAdapter extends AbstractTableAdapter<ColumnHeader, RowHead
      * @see #onCreateCellViewHolder(ViewGroup, int) ;
      */
     @Override
-    public void onBindCellViewHolder(@NonNull AbstractViewHolder holder, @Nullable Cell cellItemModel, int
-            columnPosition, int rowPosition) {
+    public void onBindCellViewHolder(@NonNull AbstractViewHolder holder, @Nullable Cell cellItemModel, int columnPosition, int rowPosition) {
+        if (cellItemModel == null) {
+            // Handle the case where cellItemModel is null if necessary
+            return;
+        }
 
         switch (holder.getItemViewType()) {
             case MOOD_CELL_TYPE:
                 MoodCellViewHolder moodViewHolder = (MoodCellViewHolder) holder;
+                Object moodData = cellItemModel.getData();
 
-                moodViewHolder.cell_image.setImageResource(mTableViewModel.getDrawable((int) cellItemModel
-                        .getData(), false));
+                if (moodData instanceof Integer) {
+                    moodViewHolder.cell_image.setImageResource(mTableViewModel.getDrawable((int) moodData, false));
+                } else {
+                    // Handle the case where moodData is not an Integer
+                    Log.e("TableViewAdapter", "Expected Integer for MOOD_CELL_TYPE but got " + (moodData != null ? moodData.getClass().getSimpleName() : "null"));
+                    // Optionally set a default image or handle this case appropriately
+                }
                 break;
+
             case GENDER_CELL_TYPE:
                 GenderCellViewHolder genderViewHolder = (GenderCellViewHolder) holder;
+                Object genderData = cellItemModel.getData();
 
-                genderViewHolder.cell_image.setImageResource(mTableViewModel.getDrawable((int)
-                        cellItemModel.getData(), true));
+                if (genderData instanceof Integer) {
+                    genderViewHolder.cell_image.setImageResource(mTableViewModel.getDrawable((int) genderData, true));
+                } else {
+                    // Handle the case where genderData is not an Integer
+                    Log.e("TableViewAdapter", "Expected Integer for GENDER_CELL_TYPE but got " + (genderData != null ? genderData.getClass().getSimpleName() : "null"));
+                    // Optionally set a default image or handle this case appropriately
+                }
                 break;
+
             default:
                 // Get the holder to update cell item text
                 CellViewHolder viewHolder = (CellViewHolder) holder;
@@ -238,17 +255,17 @@ public class TableViewAdapter extends AbstractTableAdapter<ColumnHeader, RowHead
         // Get Corner xml layout
         View corner = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.table_view_corner_layout, parent, false);
-        corner.setOnClickListener(view -> {
-            SortState sortState = TableViewAdapter.this.getTableView()
-                    .getRowHeaderSortingStatus();
-            if (sortState != SortState.ASCENDING) {
-                Log.d("TableViewAdapter", "Order Ascending");
-                TableViewAdapter.this.getTableView().sortRowHeader(SortState.ASCENDING);
-            } else {
-                Log.d("TableViewAdapter", "Order Descending");
-                TableViewAdapter.this.getTableView().sortRowHeader(SortState.DESCENDING);
-            }
-        });
+//        corner.setOnClickListener(view -> {
+//            SortState sortState = TableViewAdapter.this.getTableView()
+//                    .getRowHeaderSortingStatus();
+//            if (sortState != SortState.ASCENDING) {
+//                Log.d("TableViewAdapter", "Order Ascending");
+//                TableViewAdapter.this.getTableView().sortRowHeader(SortState.ASCENDING);
+//            } else {
+//                Log.d("TableViewAdapter", "Order Descending");
+//                TableViewAdapter.this.getTableView().sortRowHeader(SortState.DESCENDING);
+//            }
+//        });
         return corner;
     }
 
