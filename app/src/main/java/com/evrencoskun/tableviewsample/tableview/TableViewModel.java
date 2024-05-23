@@ -92,7 +92,7 @@ public class TableViewModel {
         List<List<RowHeader>> outerList = new ArrayList<>();
         for (int i = 0; i < ROW_SIZE; i++) {
             List<RowHeader> innerList = new ArrayList<>();
-            for (int j = 0; j < 5; j++) {
+            for (int j = 0; j < 2; j++) {
                 RowHeader header = new RowHeader(String.valueOf(i), "row " + i);
                 innerList.add(header);
             }
