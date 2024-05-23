@@ -24,10 +24,13 @@
   -->
 <resources>
     <dimen name="cell_height">40dp</dimen>
-    <dimen name="row_header_width">55dp</dimen>
+    <dimen name="row_header_width">44dp</dimen>
     <dimen name="text_size">12sp</dimen>
 
     <!-- Overriding the default values of the tableView -->
-    <dimen name="default_row_header_width">55dp</dimen>
+    <dimen name="default_row_header_width">44dp</dimen>
     <dimen name="default_column_header_height">40dp</dimen>
 </resources>
+
+
+<!--to do change from 44 back to 55 (?) but also determine difference between default and regular row header widths-->
