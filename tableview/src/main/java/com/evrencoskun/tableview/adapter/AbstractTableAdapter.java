@@ -34,6 +34,7 @@ import androidx.annotation.Nullable;
 
 import com.evrencoskun.tableview.ITableView;
 import com.evrencoskun.tableview.adapter.recyclerview.CellRecyclerViewAdapter;
+import com.evrencoskun.tableview.adapter.recyclerview.CellRowRecyclerViewAdapter;
 import com.evrencoskun.tableview.adapter.recyclerview.ColumnHeaderRecyclerViewAdapter;
 import com.evrencoskun.tableview.adapter.recyclerview.RowHeaderRecyclerViewAdapter;
 
@@ -50,12 +51,19 @@ public abstract class AbstractTableAdapter<CH, RH, C> implements ITableAdapter<C
     private int mColumnHeaderHeight;
 
     private ColumnHeaderRecyclerViewAdapter<CH> mColumnHeaderRecyclerViewAdapter;
-    private RowHeaderRecyclerViewAdapter<RH> mRowHeaderRecyclerViewAdapter;
+
+    // TODO change this back
+//    private RowHeaderRecyclerViewAdapter<RH> mRowHeaderRecyclerViewAdapter;
+
+    private CellRecyclerViewAdapter mRowHeaderRecyclerViewAdapter;
     private CellRecyclerViewAdapter mCellRecyclerViewAdapter;
     private View mCornerView;
 
     protected List<CH> mColumnHeaderItems;
-    protected List<RH> mRowHeaderItems;
+//    protected List<RH> mRowHeaderItems;
+
+    // TODO change this back
+    protected List<List<RH>> mRowHeaderItems;
     protected List<List<C>> mCellItems;
 
     private ITableView mTableView;
@@ -74,8 +82,11 @@ public abstract class AbstractTableAdapter<CH, RH, C> implements ITableAdapter<C
                 mColumnHeaderItems, this);
 
         // Create Row Header RecyclerView Adapter
-        mRowHeaderRecyclerViewAdapter = new RowHeaderRecyclerViewAdapter<>(context,
-                mRowHeaderItems, this);
+//        mRowHeaderRecyclerViewAdapter = new RowHeaderRecyclerViewAdapter<>(context,
+//                mRowHeaderItems, this);
+
+        // TODO change this back
+        mRowHeaderRecyclerViewAdapter = new CellRecyclerViewAdapter<>(context, mRowHeaderItems, mTableView);
 
         // Create Cell RecyclerView Adapter
         mCellRecyclerViewAdapter = new CellRecyclerViewAdapter<>(context, mCellItems, mTableView);
@@ -95,7 +106,20 @@ public abstract class AbstractTableAdapter<CH, RH, C> implements ITableAdapter<C
         dispatchColumnHeaderDataSetChangesToListeners(columnHeaderItems);
     }
 
-    public void setRowHeaderItems(@Nullable List<RH> rowHeaderItems) {
+    // TODO change this back
+//    public void setRowHeaderItems(@Nullable List<RH> rowHeaderItems) {
+//        if (rowHeaderItems == null) {
+//            return;
+//        }
+//
+//        mRowHeaderItems = rowHeaderItems;
+//
+//        // Set the items to the adapter
+//        mRowHeaderRecyclerViewAdapter.setItems(mRowHeaderItems);
+//        dispatchRowHeaderDataSetChangesToListeners(mRowHeaderItems);
+//    }
+
+        public void setRowHeaderItems(@Nullable List<List<RH>> rowHeaderItems) {
         if (rowHeaderItems == null) {
             return;
         }
@@ -104,7 +128,8 @@ public abstract class AbstractTableAdapter<CH, RH, C> implements ITableAdapter<C
 
         // Set the items to the adapter
         mRowHeaderRecyclerViewAdapter.setItems(mRowHeaderItems);
-        dispatchRowHeaderDataSetChangesToListeners(mRowHeaderItems);
+        // TODO see if we need to dispatch any 'changes' to these listeners
+//        dispatchRowHeaderDataSetChangesToListeners(mRowHeaderItems);
     }
 
     public void setCellItems(@Nullable List<List<C>> cellItems) {
@@ -121,9 +146,24 @@ public abstract class AbstractTableAdapter<CH, RH, C> implements ITableAdapter<C
         dispatchCellDataSetChangesToListeners(mCellItems);
     }
 
-    public void setAllItems(
+    // TODO change this back
+//    public void setAllItems(
+//            @Nullable List<CH> columnHeaderItems,
+//            @Nullable List<RH> rowHeaderItems,
+//            @Nullable List<List<C>> cellItems
+//    ) {
+//        // Set all items
+//        setColumnHeaderItems(columnHeaderItems);
+//        setRowHeaderItems(rowHeaderItems);
+//        setCellItems(cellItems);
+//
+//        // Control corner view
+//        updateCornerViewState(columnHeaderItems, rowHeaderItems);
+//    }
+
+        public void setAllItems(
             @Nullable List<CH> columnHeaderItems,
-            @Nullable List<RH> rowHeaderItems,
+            @Nullable List<List<RH>> rowHeaderItems,
             @Nullable List<List<C>> cellItems
     ) {
         // Set all items
@@ -131,8 +171,15 @@ public abstract class AbstractTableAdapter<CH, RH, C> implements ITableAdapter<C
         setRowHeaderItems(rowHeaderItems);
         setCellItems(cellItems);
 
-        // Control corner view
-        updateCornerViewState(columnHeaderItems, rowHeaderItems);
+//        // Control corner view
+//        updateCornerViewState(columnHeaderItems, rowHeaderItems);
+
+            // TODO change this back
+            List<RH> zerothRowHeaders = new ArrayList<>();
+            for (List<RH> rowHeaderItem : rowHeaderItems) {
+                zerothRowHeaders.add(rowHeaderItem.get(0));
+            }
+            updateCornerViewState(columnHeaderItems, zerothRowHeaders);
     }
 
     private void updateCornerViewState(
@@ -201,7 +248,12 @@ public abstract class AbstractTableAdapter<CH, RH, C> implements ITableAdapter<C
         return mColumnHeaderRecyclerViewAdapter;
     }
 
-    public RowHeaderRecyclerViewAdapter getRowHeaderRecyclerViewAdapter() {
+    // TODO change this back
+//    public RowHeaderRecyclerViewAdapter getRowHeaderRecyclerViewAdapter() {
+//        return mRowHeaderRecyclerViewAdapter;
+//    }
+
+    public CellRecyclerViewAdapter getRowHeaderRecyclerViewAdapter() {
         return mRowHeaderRecyclerViewAdapter;
     }
 
@@ -237,7 +289,9 @@ public abstract class AbstractTableAdapter<CH, RH, C> implements ITableAdapter<C
                 mRowHeaderItems.size()) {
             return null;
         }
-        return mRowHeaderItems.get(position);
+        // TODO change this back
+//        return mRowHeaderItems.get(position);
+        return mRowHeaderItems.get(position).get(0);
     }
 
     @Nullable

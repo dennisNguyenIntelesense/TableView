@@ -48,8 +48,8 @@ public interface ITableViewListener {
     void onColumnHeaderDoubleClicked(@NonNull RecyclerView.ViewHolder columnHeaderView, int
             column);
 
-    void onColumnHeaderLongPressed(@NonNull RecyclerView.ViewHolder columnHeaderView, int
-            column);
+//    void onColumnHeaderLongPressed(@NonNull RecyclerView.ViewHolder columnHeaderView, int
+//            column);
 
     void onRowHeaderClicked(@NonNull RecyclerView.ViewHolder rowHeaderView, int row);
 

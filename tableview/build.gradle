@@ -6,8 +6,6 @@ android {
     defaultConfig {
         minSdkVersion min_sdk_version
         targetSdkVersion target_sdk_version
-        versionCode 1
-        versionName '0.8.9.4'
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
     }
 
@@ -31,10 +29,12 @@ android {
     buildFeatures {
         buildConfig = false
     }
-
-    lintOptions {
+    namespace 'com.evrencoskun.tableview'
+    testNamespace 'com.evrencoskun.tableview.test'
+    lint {
         abortOnError false
     }
+
 
     tasks.withType(Javadoc) {
         options.addStringOption('Xdoclint:none', '-quiet')

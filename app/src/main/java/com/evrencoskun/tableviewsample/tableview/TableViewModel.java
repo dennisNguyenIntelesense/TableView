@@ -53,8 +53,9 @@ public class TableViewModel {
     public static final int GIRL = 2;
 
     // Constant size for dummy data sets
-    private static final int COLUMN_SIZE = 500;
-    private static final int ROW_SIZE = 500;
+    // TODO play around with these sizes
+    private static final int COLUMN_SIZE = 100;
+    private static final int ROW_SIZE = 200;
 
     // Drawables
     @DrawableRes
@@ -74,16 +75,33 @@ public class TableViewModel {
         mSadDrawable = R.drawable.ic_sad;
     }
 
+//    @NonNull
+//    private List<RowHeader> getSimpleRowHeaderList() {
+//        List<RowHeader> list = new ArrayList<>();
+//        for (int i = 0; i < ROW_SIZE; i++) {
+//            RowHeader header = new RowHeader(String.valueOf(i), "row " + i);
+//            list.add(header);
+//        }
+//
+//        return list;
+//    }
+
+    // TODO change this back
     @NonNull
-    private List<RowHeader> getSimpleRowHeaderList() {
-        List<RowHeader> list = new ArrayList<>();
+    private List<List<RowHeader>> getSimpleRowHeaderList() {
+        List<List<RowHeader>> outerList = new ArrayList<>();
         for (int i = 0; i < ROW_SIZE; i++) {
-            RowHeader header = new RowHeader(String.valueOf(i), "row " + i);
-            list.add(header);
+            List<RowHeader> innerList = new ArrayList<>();
+            for (int j = 0; j < 5; j++) {
+                RowHeader header = new RowHeader(String.valueOf(i), "row " + i);
+                innerList.add(header);
+            }
+            outerList.add(innerList);
         }
 
-        return list;
+        return outerList;
     }
+
 
     /**
      * This is a dummy model list test some cases.
@@ -163,8 +181,13 @@ public class TableViewModel {
         return getCellListForSortingTest();
     }
 
-    @NonNull
-    public List<RowHeader> getRowHeaderList() {
+//    @NonNull
+//    public List<RowHeader> getRowHeaderList() {
+//        return getSimpleRowHeaderList();
+//    }
+
+    // TODO change this back
+    public List<List<RowHeader>> getRowHeaderList() {
         return getSimpleRowHeaderList();
     }
 

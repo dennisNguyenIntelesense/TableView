@@ -52,10 +52,11 @@ android {
     buildFeatures {
         buildConfig = false
     }
-
-    lintOptions {
+    namespace 'com.evrencoskun.tableviewsample'
+    lint {
         abortOnError false
     }
+
 }
 
 dependencies {

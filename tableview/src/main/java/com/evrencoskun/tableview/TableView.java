@@ -168,8 +168,10 @@ public class TableView extends FrameLayout implements ITableView {
 
     private void initialDefaultValues(@Nullable AttributeSet attrs) {
         // Dimensions
-        // TODO change this back to not * 4
-        mRowHeaderWidth = (int) getResources().getDimension(R.dimen.default_row_header_width) * 4;
+        // TODO change this back to not * 2
+        mRowHeaderWidth = (int) getResources().getDimension(R.dimen.default_row_header_width) * 3;
+//        mRowHeaderWidth = (int) ((int) getResources().getDimension(R.dimen.default_row_header_width) * 3);
+
         mColumnHeaderHeight = (int) getResources().getDimension(R.dimen
                 .default_column_header_height);
 
@@ -198,8 +200,9 @@ public class TableView extends FrameLayout implements ITableView {
         try {
             // Dimensions
 
-            mRowHeaderWidth = (int) a.getDimension(R.styleable.TableView_row_header_width,
-                    mRowHeaderWidth);
+//            mRowHeaderWidth = (int) a.getDimension(R.styleable.TableView_row_header_width,
+//                    mRowHeaderWidth);
+
             mColumnHeaderHeight = (int) a.getDimension(R.styleable
                     .TableView_column_header_height, mColumnHeaderHeight);
 
@@ -345,7 +348,10 @@ public class TableView extends FrameLayout implements ITableView {
         recyclerView.setLayoutManager(getRowHeaderLayoutManager());
 
         // Set layout params
-        LayoutParams layoutParams = new LayoutParams(mRowHeaderWidth, LayoutParams.WRAP_CONTENT, getGravity());
+        // TODO change layout params back
+//        LayoutParams layoutParams = new LayoutParams(mRowHeaderWidth, LayoutParams.WRAP_CONTENT, getGravity());
+        LayoutParams layoutParams = new LayoutParams(mRowHeaderWidth * 3, LayoutParams.WRAP_CONTENT, getGravity());
+
         // If the corner is on the bottom the margin needs to be on the bottom
         if (mCornerViewLocation == CornerViewLocation.BOTTOM_LEFT || mCornerViewLocation == CornerViewLocation.BOTTOM_RIGHT) {
             layoutParams.bottomMargin = mColumnHeaderHeight;

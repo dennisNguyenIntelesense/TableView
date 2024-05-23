@@ -78,7 +78,7 @@ public class CellRecyclerViewItemClickListener extends AbstractItemClickListener
         return false;
     }
 
-    @Override
+//    @Override
     protected void longPressAction(@NonNull MotionEvent e) {
         // Consume the action for the time when either the cell row recyclerView or
         // the cell recyclerView is scrolling.

@@ -33,7 +33,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.evrencoskun.tableview.TableView;
 import com.evrencoskun.tableview.listener.ITableViewListener;
 import com.evrencoskun.tableviewsample.tableview.holder.ColumnHeaderViewHolder;
-import com.evrencoskun.tableviewsample.tableview.popup.ColumnHeaderLongPressPopup;
+//import com.evrencoskun.tableviewsample.tableview.popup.ColumnHeaderLongPressPopup;
 import com.evrencoskun.tableviewsample.tableview.popup.RowHeaderLongPressPopup;
 
 /**
@@ -124,18 +124,18 @@ public class TableViewListener implements ITableViewListener {
      * @param columnHeaderView : Long Pressed Column Header ViewHolder.
      * @param column           : X (Column) position of Long Pressed Column Header item.
      */
-    @Override
-    public void onColumnHeaderLongPressed(@NonNull RecyclerView.ViewHolder columnHeaderView, int
-            column) {
-
-        if (columnHeaderView instanceof ColumnHeaderViewHolder) {
-            // Create Long Press Popup
-            ColumnHeaderLongPressPopup popup = new ColumnHeaderLongPressPopup(
-                    (ColumnHeaderViewHolder) columnHeaderView, mTableView);
-            // Show
-            popup.show();
-        }
-    }
+//    @Override
+//    public void onColumnHeaderLongPressed(@NonNull RecyclerView.ViewHolder columnHeaderView, int
+//            column) {
+//
+//        if (columnHeaderView instanceof ColumnHeaderViewHolder) {
+//            // Create Long Press Popup
+//            ColumnHeaderLongPressPopup popup = new ColumnHeaderLongPressPopup(
+//                    (ColumnHeaderViewHolder) columnHeaderView, mTableView);
+//            // Show
+//            popup.show();
+//        }
+//    }
 
     /**
      * Called when user click any Row Header item.

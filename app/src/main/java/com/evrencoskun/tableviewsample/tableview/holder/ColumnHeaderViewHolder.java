@@ -64,7 +64,7 @@ public class ColumnHeaderViewHolder extends AbstractSorterViewHolder {
         column_header_sortButton = itemView.findViewById(R.id.column_header_sortButton);
 
         // Set click listener to the sort button
-        column_header_sortButton.setOnClickListener(mSortButtonClickListener);
+//        column_header_sortButton.setOnClickListener(mSortButtonClickListener);
     }
 
     /**
@@ -81,44 +81,44 @@ public class ColumnHeaderViewHolder extends AbstractSorterViewHolder {
         column_header_textview.requestLayout();
     }
 
-    @NonNull
-    private final View.OnClickListener mSortButtonClickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View view) {
-            if (getSortState() == SortState.ASCENDING) {
-                tableView.sortColumn(getBindingAdapterPosition(), SortState.DESCENDING);
-            } else if (getSortState() == SortState.DESCENDING) {
-                tableView.sortColumn(getBindingAdapterPosition(), SortState.ASCENDING);
-            } else {
-                // Default one
-                tableView.sortColumn(getBindingAdapterPosition(), SortState.DESCENDING);
-            }
+//    @NonNull
+//    private final View.OnClickListener mSortButtonClickListener = new View.OnClickListener() {
+//        @Override
+//        public void onClick(View view) {
+//            if (getSortState() == SortState.ASCENDING) {
+//                tableView.sortColumn(getBindingAdapterPosition(), SortState.DESCENDING);
+//            } else if (getSortState() == SortState.DESCENDING) {
+//                tableView.sortColumn(getBindingAdapterPosition(), SortState.ASCENDING);
+//            } else {
+//                // Default one
+//                tableView.sortColumn(getBindingAdapterPosition(), SortState.DESCENDING);
+//            }
+//
+//        }
+//    };
 
-        }
-    };
-
-    @Override
-    public void onSortingStatusChanged(@NonNull SortState sortState) {
-        Log.e(LOG_TAG, " + onSortingStatusChanged: x:  " + getBindingAdapterPosition() + ", " +
-                "old state: " + getSortState() + ", current state: " + sortState + ", " +
-                "visibility: " + column_header_sortButton.getVisibility());
-
-        super.onSortingStatusChanged(sortState);
-
-        // It is necessary to remeasure itself.
-        column_header_container.getLayoutParams().width = LinearLayout.LayoutParams.WRAP_CONTENT;
-
-        controlSortState(sortState);
-
-        Log.e(LOG_TAG, " - onSortingStatusChanged: x:  " + getBindingAdapterPosition() + ", " +
-                "old state: " + getSortState() + ", current state: " + sortState + ", " +
-                "visibility: " + column_header_sortButton.getVisibility());
-
-        column_header_textview.requestLayout();
-        column_header_sortButton.requestLayout();
-        column_header_container.requestLayout();
-        itemView.requestLayout();
-    }
+//    @Override
+//    public void onSortingStatusChanged(@NonNull SortState sortState) {
+//        Log.e(LOG_TAG, " + onSortingStatusChanged: x:  " + getBindingAdapterPosition() + ", " +
+//                "old state: " + getSortState() + ", current state: " + sortState + ", " +
+//                "visibility: " + column_header_sortButton.getVisibility());
+//
+//        super.onSortingStatusChanged(sortState);
+//
+//        // It is necessary to remeasure itself.
+//        column_header_container.getLayoutParams().width = LinearLayout.LayoutParams.WRAP_CONTENT;
+//
+//        controlSortState(sortState);
+//
+//        Log.e(LOG_TAG, " - onSortingStatusChanged: x:  " + getBindingAdapterPosition() + ", " +
+//                "old state: " + getSortState() + ", current state: " + sortState + ", " +
+//                "visibility: " + column_header_sortButton.getVisibility());
+//
+//        column_header_textview.requestLayout();
+//        column_header_sortButton.requestLayout();
+//        column_header_container.requestLayout();
+//        itemView.requestLayout();
+//    }
 
     private void controlSortState(@NonNull SortState sortState) {
         if (sortState == SortState.ASCENDING) {
