@@ -56,7 +56,8 @@ public class ColumnHeaderRecyclerViewItemClickListener extends AbstractItemClick
             AbstractViewHolder holder = (AbstractViewHolder) mRecyclerView.getChildViewHolder
                     (childView);
 
-            int column = holder.getBindingAdapterPosition();
+            int column = holder.getAdapterPosition();
+            // TODO change this back to viewHolder.getBindingAdapterPosition()
 
             // Control to ignore selection color
             if (!mTableView.isIgnoreSelectionColors()) {
@@ -99,7 +100,9 @@ public class ColumnHeaderRecyclerViewItemClickListener extends AbstractItemClick
             AbstractViewHolder holder = (AbstractViewHolder) mRecyclerView.getChildViewHolder
                     (childView);
 
-            int column = holder.getBindingAdapterPosition();
+//            int column = holder.getBindingAdapterPosition();
+            // TODO change this back to getBindingAdapterPosition();
+            int column = holder.getAdapterPosition();
 
             // Control to ignore selection color
             if (!mTableView.isIgnoreSelectionColors()) {

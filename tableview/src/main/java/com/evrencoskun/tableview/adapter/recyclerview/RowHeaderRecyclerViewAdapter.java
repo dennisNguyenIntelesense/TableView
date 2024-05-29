@@ -76,7 +76,8 @@ public class RowHeaderRecyclerViewAdapter<RH> extends AbstractRecyclerViewAdapte
         super.onViewAttachedToWindow(viewHolder);
 
         SelectionState selectionState = mTableView.getSelectionHandler().getRowSelectionState
-                (viewHolder.getBindingAdapterPosition());
+                (viewHolder.getAdapterPosition());
+        // TODO change this back to getBindingAdapterPosition()
 
         // Control to ignore selection color
         if (!mTableView.isIgnoreSelectionColors()) {

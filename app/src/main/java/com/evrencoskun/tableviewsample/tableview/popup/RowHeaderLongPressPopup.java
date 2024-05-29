@@ -55,7 +55,10 @@ public class RowHeaderLongPressPopup extends PopupMenu implements PopupMenu
         super(viewHolder.itemView.getContext(), viewHolder.itemView);
 
         this.mTableView = tableView;
-        this.mRowPosition = viewHolder.getBindingAdapterPosition();
+
+//        this.mRowPosition = viewHolder.getBindingAdapterPosition();
+        // TODO change back
+        this.mRowPosition = viewHolder.getAdapterPosition();
 
         initialize();
     }
