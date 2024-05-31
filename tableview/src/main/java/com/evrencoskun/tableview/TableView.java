@@ -818,6 +818,44 @@ public class TableView extends FrameLayout implements ITableView {
         return mRowHeaderWidth;
     }
 
+    // TODO make sure that this properly resizes Recycler Views and column header height
+    public void setColumnHeaderHeight(int columnHeaderHeight) {
+        this.mColumnHeaderHeight = columnHeaderHeight;
+
+        // Update ColumnHeader layout height
+        ViewGroup.LayoutParams layoutParamsColumn = mColumnHeaderRecyclerView.getLayoutParams();
+        layoutParamsColumn.height = columnHeaderHeight;
+        mColumnHeaderRecyclerView.setLayoutParams(layoutParamsColumn);
+
+        // Update RowHeader top margin
+        LayoutParams layoutParamsRow = (LayoutParams) mRowHeaderRecyclerView.getLayoutParams();
+        // If the corner is on the bottom margin needs to be on the bottom
+        if (mCornerViewLocation == CornerViewLocation.BOTTOM_LEFT
+                || mCornerViewLocation == CornerViewLocation.BOTTOM_RIGHT) {
+            layoutParamsRow.bottomMargin = columnHeaderHeight;
+        } else {
+            layoutParamsRow.topMargin = columnHeaderHeight;
+        }
+        mRowHeaderRecyclerView.setLayoutParams(layoutParamsRow);
+        mRowHeaderRecyclerView.requestLayout();
+
+        // Update Cells top margin
+        LayoutParams layoutParamsCell = (LayoutParams) mCellRecyclerView.getLayoutParams();
+        if (mCornerViewLocation == CornerViewLocation.BOTTOM_LEFT
+                || mCornerViewLocation == CornerViewLocation.BOTTOM_RIGHT) {
+            layoutParamsCell.bottomMargin = columnHeaderHeight;
+        } else {
+            layoutParamsCell.topMargin = columnHeaderHeight;
+        }
+        mCellRecyclerView.setLayoutParams(layoutParamsCell);
+        mCellRecyclerView.requestLayout();
+
+        if (getAdapter() != null) {
+            // update CornerView size
+            getAdapter().setColumnHeaderHeight(columnHeaderHeight);
+        }
+    }
+
     /**
      * set RowHeaderWidth
      *

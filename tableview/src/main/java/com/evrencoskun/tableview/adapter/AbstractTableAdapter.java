@@ -270,6 +270,16 @@ public abstract class AbstractTableAdapter<CH, RH, C> implements ITableAdapter<C
         }
     }
 
+    // TODO see if this properly resets the corner box dimensions
+    public void setCornerViewDimensions(int width, int height) {
+        setRowHeaderWidth(width);
+
+        if (mCornerView != null) {
+            ViewGroup.LayoutParams layoutParams = mCornerView.getLayoutParams();
+            layoutParams.height = height;
+        }
+    }
+
     public void setColumnHeaderHeight(int columnHeaderHeight) {
         this.mColumnHeaderHeight = columnHeaderHeight;
     }
