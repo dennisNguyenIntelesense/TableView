@@ -212,6 +212,11 @@ public class CellRecyclerViewAdapter<C> extends AbstractRecyclerViewAdapter<C> {
         }
     }
 
+    // TODO for performance gains
+    public void notifyCellDataSetChangedNewRow() {
+
+    }
+
     /**
      * This method helps to get cell item model that is located on given column position.
      *

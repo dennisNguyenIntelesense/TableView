@@ -304,6 +304,14 @@ public abstract class AbstractTableAdapter<CH, RH, C> implements ITableAdapter<C
         return mRowHeaderItems.get(position).get(0);
     }
 
+    public int getNumRows() {
+        return mRowHeaderItems.size();
+    }
+
+    public int getNumColumns() {
+        return mColumnHeaderItems.size();
+    }
+
     @Nullable
     public C getCellItem(int columnPosition, int rowPosition) {
         if ((mCellItems == null || mCellItems.isEmpty()) || columnPosition < 0 || rowPosition >=
@@ -366,6 +374,14 @@ public abstract class AbstractTableAdapter<CH, RH, C> implements ITableAdapter<C
         mRowHeaderRecyclerViewAdapter.addItem(rowPosition, rowHeaderItem);
     }
 
+    /**
+     * version of addRow that handles multiple rowHeaderItems; performance gains
+     */
+    public void addRow(int rowPosition, @Nullable List<RH> rowHeaderItems, @Nullable List<C> cellItems) {
+        mCellRecyclerViewAdapter.addItem(rowPosition, cellItems);
+        mRowHeaderRecyclerViewAdapter.addItem(rowPosition, rowHeaderItems);
+    }
+
     public void addRowRange(int rowPositionStart, @Nullable List<RH> rowHeaderItem, @Nullable List<List<C>> cellItems) {
         mRowHeaderRecyclerViewAdapter.addItemRange(rowPositionStart, rowHeaderItem);
         mCellRecyclerViewAdapter.addItemRange(rowPositionStart, cellItems);
@@ -373,6 +389,13 @@ public abstract class AbstractTableAdapter<CH, RH, C> implements ITableAdapter<C
 
     public void changeRowHeaderItem(int rowPosition, @Nullable RH rowHeaderModel) {
         mRowHeaderRecyclerViewAdapter.changeItem(rowPosition, rowHeaderModel);
+    }
+
+    /**
+     * version of changeRowHeaderItem that accommodates List<RH>; performance gains
+     */
+    public void changeRowHeaderItem(int rowPosition, @Nullable List<RH> rowHeaderModels) {
+        mRowHeaderRecyclerViewAdapter.changeItem(rowPosition, rowHeaderModels);
     }
 
     public void changeRowHeaderItemRange(int rowPositionStart, @Nullable List<RH> rowHeaderModelList) {
