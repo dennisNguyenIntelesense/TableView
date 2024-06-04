@@ -112,8 +112,16 @@ public abstract class AbstractRecyclerViewAdapter<T> extends RecyclerView
     }
 
     public void addItem(int position, @Nullable T item) {
+//        if (position != RecyclerView.NO_POSITION && item != null) {
+//            mItemList.add(position, item);
+//            notifyItemInserted(position);
+//        }
         if (position != RecyclerView.NO_POSITION && item != null) {
-            mItemList.add(position, item);
+            if (position >= mItemList.size()) {
+                mItemList.add(item);  // Add to the end if the position is beyond the current size
+            } else {
+                mItemList.add(position, item);
+            }
             notifyItemInserted(position);
         }
     }
@@ -123,13 +131,16 @@ public abstract class AbstractRecyclerViewAdapter<T> extends RecyclerView
             for (int i = 0; i < items.size(); i++) {
                 mItemList.add((i + positionStart), items.get(i));
             }
-
             notifyItemRangeInserted(positionStart, items.size());
         }
     }
 
     public void changeItem(int position, @Nullable T item) {
-        if (position != RecyclerView.NO_POSITION && item != null) {
+//        if (position != RecyclerView.NO_POSITION && item != null) {
+//            mItemList.set(position, item);
+//            notifyItemChanged(position);
+//        }
+        if (position != RecyclerView.NO_POSITION && item != null && position < mItemList.size()) {
             mItemList.set(position, item);
             notifyItemChanged(position);
         }

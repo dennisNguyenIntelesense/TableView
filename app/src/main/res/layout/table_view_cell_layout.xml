@@ -22,10 +22,11 @@
  ~ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  ~ SOFTWARE.
   -->
+<!--todo change width back to wrap content-->
 <LinearLayout android:id="@+id/cell_container"
               xmlns:android="http://schemas.android.com/apk/res/android"
               xmlns:tools="http://schemas.android.com/tools"
-              android:layout_width="wrap_content"
+              android:layout_width="70dp"
               android:layout_height="@dimen/cell_height"
               android:background="@color/cell_background_color"
               android:gravity="center"

@@ -76,9 +76,23 @@ public class ColumnHeaderViewHolder extends AbstractSorterViewHolder {
         // If your TableView should have auto resize for cells & columns.
         // Then you should consider the below lines. Otherwise, you can remove them.
 
+        // old wrap content way of measuring width
         // It is necessary to remeasure itself.
-        column_header_container.getLayoutParams().width = LinearLayout.LayoutParams.WRAP_CONTENT;
+//        column_header_container.getLayoutParams().width = LinearLayout.LayoutParams.WRAP_CONTENT;
+//        column_header_textview.requestLayout();
+
+
+        // Set the width of column_header_container and column_header_textview to 70dp
+        int widthInDp = 70;
+        float scale = itemView.getContext().getResources().getDisplayMetrics().density;
+        int widthInPx = (int) (widthInDp * scale + 0.5f); // Convert dp to pixels
+
+        column_header_container.getLayoutParams().width = widthInPx;
+        column_header_textview.getLayoutParams().width = widthInPx;
+
+        // It is necessary to remeasure itself.
         column_header_textview.requestLayout();
+        column_header_container.requestLayout();
     }
 
 //    @NonNull

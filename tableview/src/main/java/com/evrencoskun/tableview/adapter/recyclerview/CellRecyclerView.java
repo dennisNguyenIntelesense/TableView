@@ -51,14 +51,21 @@ public class CellRecyclerView extends RecyclerView {
     public CellRecyclerView(@NonNull Context context) {
         super(context);
 
+        // TODO change these back if necessary
         // These are necessary.
-        this.setHasFixedSize(false);
+//        this.setHasFixedSize(false);
+        this.setHasFixedSize(true);
         this.setNestedScrollingEnabled(false);
+
         // These are for better scrolling process.
-        this.setItemViewCacheSize(context.getResources().getInteger(R.integer
-                .default_item_cache_size));
-        this.setDrawingCacheEnabled(true);
-        this.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
+        // TODO uncomment these if necessary
+//        this.setItemViewCacheSize(context.getResources().getInteger(R.integer
+//                .default_item_cache_size));
+//        this.setDrawingCacheEnabled(true);
+//        this.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
+
+        // TODO get rid of this if it doesn't work
+        this.setLayerType(View.LAYER_TYPE_HARDWARE, null);
     }
 
     @Override
