@@ -25,10 +25,12 @@
 package com.evrencoskun.tableview.adapter.recyclerview;
 
 import android.content.Context;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.LinearSmoothScroller;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.evrencoskun.tableview.R;
@@ -63,6 +65,11 @@ public class CellRecyclerView extends RecyclerView {
 //                .default_item_cache_size));
 //        this.setDrawingCacheEnabled(true);
 //        this.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
+
+        // performance tweak
+        this.setItemViewCacheSize(100); // Adjust cache size as needed
+        this.setDrawingCacheEnabled(true);
+        this.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_LOW);
 
         // TODO get rid of this if it doesn't work
         this.setLayerType(View.LAYER_TYPE_HARDWARE, null);
@@ -158,11 +165,13 @@ public class CellRecyclerView extends RecyclerView {
      * @see LayoutManager#canScrollVertically()
      * @see LayoutManager#canScrollHorizontally()
      */
+
+    // TODO performance tweaks
     @Override
     public boolean fling(int velocityX, int velocityY) {
         // Adjust speeds to be able to provide smoother scroll.
-        //velocityX *= 0.6;
-        //velocityY *= 0.6;
+        velocityX = (int) (velocityX * 0.1); // Adjust this factor to fine-tune
+        velocityY = (int) (velocityY * 0.1); // Adjust this factor to fine-tune
         return super.fling(velocityX, velocityY);
     }
 }

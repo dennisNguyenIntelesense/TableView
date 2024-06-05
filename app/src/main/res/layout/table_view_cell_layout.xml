@@ -33,10 +33,25 @@
               android:orientation="vertical">
 
 
+<!--    <TextView-->
+<!--        android:id="@+id/cell_data"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent"-->
+<!--        android:layout_gravity="center_vertical"-->
+<!--        android:layout_marginEnd="10dp"-->
+<!--        android:layout_marginStart="10dp"-->
+<!--        android:gravity="center"-->
+<!--        android:maxLines="1"-->
+<!--        android:textColor="@color/table_view_default_text_color"-->
+<!--        android:textSize="@dimen/text_size"-->
+<!--        android:visibility="visible"-->
+<!--        tools:text="Cell Data"/>-->
+
+<!--    TODO change this back to match_parent -->
     <TextView
         android:id="@+id/cell_data"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="70dp"
+        android:layout_height="40dp"
         android:layout_gravity="center_vertical"
         android:layout_marginEnd="10dp"
         android:layout_marginStart="10dp"

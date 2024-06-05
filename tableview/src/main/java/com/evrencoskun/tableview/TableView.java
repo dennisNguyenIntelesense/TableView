@@ -33,6 +33,8 @@ import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.HorizontalScrollView;
+import android.widget.LinearLayout;
 
 import com.evrencoskun.tableview.adapter.AbstractTableAdapter;
 import com.evrencoskun.tableview.adapter.recyclerview.CellRecyclerView;
@@ -61,6 +63,7 @@ import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
+import androidx.core.widget.NestedScrollView;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
@@ -242,6 +245,8 @@ public class TableView extends FrameLayout implements ITableView {
      * <p><b>Note:</b> This should only be called directly if the class was constructed
      * with initialize boolean set to {@code false}
      */
+
+    // original implementation of initialize()
     public void initialize() {
 
         // Create Views
@@ -268,6 +273,31 @@ public class TableView extends FrameLayout implements ITableView {
 
         initializeListeners();
     }
+
+//    public void initialize() {
+//        // Create the HorizontalScrollView containing both RecyclerViews
+//        HorizontalScrollView scrollView = createScrollViewWithRecyclerViews();
+//
+////        // Set some Id to help in identification
+////        scrollView.setId(R.id.HorizontalScrollView);
+//
+//        // Add the HorizontalScrollView to the parent layout
+//        addView(scrollView, new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT));
+//
+//        // Create and add the RowHeaderRecyclerView
+//        mRowHeaderRecyclerView = createRowHeaderRecyclerView();
+//        addView(mRowHeaderRecyclerView);
+//
+//        // Create Handlers
+//        mSelectionHandler = new SelectionHandler(this);
+//        mVisibilityHandler = new VisibilityHandler(this);
+//        mScrollHandler = new ScrollHandler(this);
+//        mPreferencesHandler = new PreferencesHandler(this);
+//        mColumnWidthHandler = new ColumnWidthHandler(this);
+//
+//        initializeListeners();
+//    }
+
 
     protected void initializeListeners() {
 
@@ -313,6 +343,38 @@ public class TableView extends FrameLayout implements ITableView {
 
     }
 
+    // creates HorizontalScrollView that will contain both columnHeader and cell recyclerViews
+//    @NonNull
+//    protected HorizontalScrollView createScrollViewWithRecyclerViews() {
+//        Context context = getContext();
+//
+//        // Create a LinearLayout to hold both RecyclerViews
+//        LinearLayout linearLayout = new LinearLayout(context);
+//        linearLayout.setOrientation(LinearLayout.VERTICAL);
+//
+//        // Initialize the ColumnHeaderRecyclerView
+//        mColumnHeaderRecyclerView = createColumnHeaderRecyclerView();
+//        LinearLayout.LayoutParams columnHeaderLayoutParams = new LinearLayout.LayoutParams(
+//                LinearLayout.LayoutParams.WRAP_CONTENT, mColumnHeaderHeight);
+//        linearLayout.addView(mColumnHeaderRecyclerView, columnHeaderLayoutParams);
+//
+//        // Initialize the CellRecyclerView
+//        mCellRecyclerView = createCellRecyclerView();
+//        LinearLayout.LayoutParams cellLayoutParams = new LinearLayout.LayoutParams(
+//                LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.MATCH_PARENT);
+//        linearLayout.addView(mCellRecyclerView, cellLayoutParams);
+//
+//        // Wrap the LinearLayout in a HorizontalScrollView
+//        HorizontalScrollView horizontalScrollView = new HorizontalScrollView(context);
+//        horizontalScrollView.addView(linearLayout, new HorizontalScrollView.LayoutParams(
+//                HorizontalScrollView.LayoutParams.WRAP_CONTENT, HorizontalScrollView.LayoutParams.MATCH_PARENT));
+//
+//        return horizontalScrollView;
+//    }
+
+
+
+
     @NonNull
     protected CellRecyclerView createColumnHeaderRecyclerView() {
         CellRecyclerView recyclerView = new CellRecyclerView(getContext());
@@ -320,6 +382,7 @@ public class TableView extends FrameLayout implements ITableView {
         // Set layout manager
         recyclerView.setLayoutManager(getColumnHeaderLayoutManager());
 
+        // TODO uncomment out setting layout params
         // Set layout params
         LayoutParams layoutParams = new LayoutParams(LayoutParams.WRAP_CONTENT,
                 mColumnHeaderHeight, getGravity());
@@ -350,6 +413,7 @@ public class TableView extends FrameLayout implements ITableView {
         // Set layout params
         // TODO change layout params back
 //        LayoutParams layoutParams = new LayoutParams(mRowHeaderWidth, LayoutParams.WRAP_CONTENT, getGravity());
+
         LayoutParams layoutParams = new LayoutParams(mRowHeaderWidth, LayoutParams.WRAP_CONTENT, getGravity());
 
         // If the corner is on the bottom the margin needs to be on the bottom
@@ -379,6 +443,7 @@ public class TableView extends FrameLayout implements ITableView {
         // Set layout manager
         recyclerView.setLayoutManager(getCellLayoutManager());
 
+        // TODO uncomment out setting layout params
         // Set layout params
         LayoutParams layoutParams = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams
                 .WRAP_CONTENT, getGravity());

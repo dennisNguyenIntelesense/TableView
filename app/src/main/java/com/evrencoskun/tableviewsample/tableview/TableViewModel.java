@@ -54,8 +54,8 @@ public class TableViewModel {
 
     // Constant size for dummy data sets
     // TODO play around with these sizes
-    private static final int COLUMN_SIZE = 100;
-    private static final int ROW_SIZE = 200;
+    private static final int COLUMN_SIZE = 400;
+    private static final int ROW_SIZE = 400;
 
     // Drawables
     @DrawableRes
@@ -114,7 +114,8 @@ public class TableViewModel {
             String title = "column " + i;
             int nRandom = new Random().nextInt();
             if (nRandom % 4 == 0 || nRandom % 3 == 0 || nRandom == i) {
-                title = "large column " + i;
+//                title = "large column " + i;
+                title = "teeny column " + i;
             }
 
             ColumnHeader header = new ColumnHeader(String.valueOf(i), title);

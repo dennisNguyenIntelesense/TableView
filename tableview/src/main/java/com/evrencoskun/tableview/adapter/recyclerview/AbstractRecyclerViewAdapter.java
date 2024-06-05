@@ -159,4 +159,11 @@ public abstract class AbstractRecyclerViewAdapter<T> extends RecyclerView
     public int getItemViewType(int position) {
         return 1;
     }
+
+    @Override
+    public long getItemId(int position) {
+        return mItemList.get(position).hashCode();
+    }
+
 }
+

@@ -90,6 +90,13 @@ public abstract class AbstractTableAdapter<CH, RH, C> implements ITableAdapter<C
 
         // Create Cell RecyclerView Adapter
         mCellRecyclerViewAdapter = new CellRecyclerViewAdapter<>(context, mCellItems, mTableView);
+
+
+
+        // TODO see if this actually does anything
+        mColumnHeaderRecyclerViewAdapter.setHasStableIds(true);
+        mRowHeaderRecyclerViewAdapter.setHasStableIds(true);
+        mCellRecyclerViewAdapter.setHasStableIds(true);
     }
 
     public void setColumnHeaderItems(@Nullable List<CH> columnHeaderItems) {

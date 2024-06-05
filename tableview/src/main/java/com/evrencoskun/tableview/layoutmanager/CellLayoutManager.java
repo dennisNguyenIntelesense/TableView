@@ -26,6 +26,7 @@ package com.evrencoskun.tableview.layoutmanager;
 
 import android.content.Context;
 import android.os.Handler;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.SparseArray;
 import android.util.SparseIntArray;
@@ -34,6 +35,7 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.LinearSmoothScroller;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.evrencoskun.tableview.ITableView;
@@ -82,6 +84,9 @@ public class CellLayoutManager extends LinearLayoutManager {
     private void initialize() {
         this.setOrientation(VERTICAL);
         // Add new one
+
+        // TODO performance tweak
+        this.setInitialPrefetchItemCount(50);
     }
 
     @Override
@@ -543,5 +548,29 @@ public class CellLayoutManager extends LinearLayoutManager {
 
     private int getCellRecyclerViewScrollState() {
         return mTableView.getCellRecyclerView().getScrollState();
+    }
+
+    // performance tweak
+    @Override
+    public void smoothScrollToPosition(RecyclerView recyclerView, RecyclerView.State state, int position) {
+        RecyclerView.SmoothScroller smoothScroller = new CustomSmoothScroller(recyclerView.getContext());
+        smoothScroller.setTargetPosition(position);
+        startSmoothScroll(smoothScroller);
+    }
+
+}
+
+
+// TODO remove performance tweak; change 50f (original) to whatever
+class CustomSmoothScroller extends LinearSmoothScroller {
+
+    public CustomSmoothScroller(Context context) {
+        super(context);
+    }
+
+    @Override
+    protected float calculateSpeedPerPixel(DisplayMetrics displayMetrics) {
+        // Adjust this value to change the scrolling speed (lower = faster)
+        return 25f / displayMetrics.densityDpi;
     }
 }

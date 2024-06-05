@@ -115,4 +115,5 @@ public class ColumnHeaderRecyclerViewAdapter<CH> extends AbstractRecyclerViewAda
         }
         return mColumnSortHelper;
     }
+
 }
