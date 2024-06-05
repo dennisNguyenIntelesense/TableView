@@ -81,21 +81,21 @@ public class TableViewAdapter extends AbstractTableAdapter<ColumnHeader, RowHead
     @Override
     public AbstractViewHolder onCreateCellViewHolder(@NonNull ViewGroup parent, int viewType) {
         //TODO check
-        Log.e(LOG_TAG, " onCreateCellViewHolder has been called");
+//        Log.e(LOG_TAG, " onCreateCellViewHolder has been called");
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         View layout;
 
         switch (viewType) {
-            case MOOD_CELL_TYPE:
-                // Get image cell layout which has ImageView on the base instead of TextView.
-                layout = inflater.inflate(R.layout.table_view_image_cell_layout, parent, false);
-
-                return new MoodCellViewHolder(layout);
-            case GENDER_CELL_TYPE:
-                // Get image cell layout which has ImageView instead of TextView.
-                layout = inflater.inflate(R.layout.table_view_image_cell_layout, parent, false);
-
-                return new GenderCellViewHolder(layout);
+//            case MOOD_CELL_TYPE:
+//                // Get image cell layout which has ImageView on the base instead of TextView.
+//                layout = inflater.inflate(R.layout.table_view_image_cell_layout, parent, false);
+//
+//                return new MoodCellViewHolder(layout);
+//            case GENDER_CELL_TYPE:
+//                // Get image cell layout which has ImageView instead of TextView.
+//                layout = inflater.inflate(R.layout.table_view_image_cell_layout, parent, false);
+//
+//                return new GenderCellViewHolder(layout);
             default:
                 // For cells that display a text
                 layout = inflater.inflate(R.layout.table_view_cell_layout, parent, false);
@@ -127,31 +127,31 @@ public class TableViewAdapter extends AbstractTableAdapter<ColumnHeader, RowHead
         }
 
         switch (holder.getItemViewType()) {
-            case MOOD_CELL_TYPE:
-                MoodCellViewHolder moodViewHolder = (MoodCellViewHolder) holder;
-                Object moodData = cellItemModel.getData();
-
-                if (moodData instanceof Integer) {
-                    moodViewHolder.cell_image.setImageResource(mTableViewModel.getDrawable((int) moodData, false));
-                } else {
-                    // Handle the case where moodData is not an Integer
-                    Log.e("TableViewAdapter", "Expected Integer for MOOD_CELL_TYPE but got " + (moodData != null ? moodData.getClass().getSimpleName() : "null"));
-                    // Optionally set a default image or handle this case appropriately
-                }
-                break;
-
-            case GENDER_CELL_TYPE:
-                GenderCellViewHolder genderViewHolder = (GenderCellViewHolder) holder;
-                Object genderData = cellItemModel.getData();
-
-                if (genderData instanceof Integer) {
-                    genderViewHolder.cell_image.setImageResource(mTableViewModel.getDrawable((int) genderData, true));
-                } else {
-                    // Handle the case where genderData is not an Integer
-                    Log.e("TableViewAdapter", "Expected Integer for GENDER_CELL_TYPE but got " + (genderData != null ? genderData.getClass().getSimpleName() : "null"));
-                    // Optionally set a default image or handle this case appropriately
-                }
-                break;
+//            case MOOD_CELL_TYPE:
+//                MoodCellViewHolder moodViewHolder = (MoodCellViewHolder) holder;
+//                Object moodData = cellItemModel.getData();
+//
+//                if (moodData instanceof Integer) {
+//                    moodViewHolder.cell_image.setImageResource(mTableViewModel.getDrawable((int) moodData, false));
+//                } else {
+//                    // Handle the case where moodData is not an Integer
+//                    Log.e("TableViewAdapter", "Expected Integer for MOOD_CELL_TYPE but got " + (moodData != null ? moodData.getClass().getSimpleName() : "null"));
+//                    // Optionally set a default image or handle this case appropriately
+//                }
+//                break;
+//
+//            case GENDER_CELL_TYPE:
+//                GenderCellViewHolder genderViewHolder = (GenderCellViewHolder) holder;
+//                Object genderData = cellItemModel.getData();
+//
+//                if (genderData instanceof Integer) {
+//                    genderViewHolder.cell_image.setImageResource(mTableViewModel.getDrawable((int) genderData, true));
+//                } else {
+//                    // Handle the case where genderData is not an Integer
+//                    Log.e("TableViewAdapter", "Expected Integer for GENDER_CELL_TYPE but got " + (genderData != null ? genderData.getClass().getSimpleName() : "null"));
+//                    // Optionally set a default image or handle this case appropriately
+//                }
+//                break;
 
             default:
                 // Get the holder to update cell item text

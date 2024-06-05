@@ -80,61 +80,62 @@ public class ColumnLayoutManager extends LinearLayoutManager {
         mYPosition = getRowPosition();
     }
 
-    @Override
-    public void measureChildWithMargins(@NonNull View child, int widthUsed, int heightUsed) {
-        super.measureChildWithMargins(child, widthUsed, heightUsed);
-
-        // If has fixed width is true, than calculation of the column width is not necessary.
-        if (mTableView.hasFixedWidth()) {
-            return;
-        }
-
-        measureChild(child, widthUsed, heightUsed);
-    }
-
-    @Override
-    public void measureChild(@NonNull View child, int widthUsed, int heightUsed) {
-
-        int columnPosition = getPosition(child);
-
-        // Get cached width size of column and cell
-        int cacheWidth = mCellLayoutManager.getCacheWidth(mYPosition, columnPosition);
-        int columnCacheWidth = mColumnHeaderLayoutManager.getCacheWidth(columnPosition);
-
-        // Already each of them is same width size.
-        if (cacheWidth != -1 && cacheWidth == columnCacheWidth) {
-            // Control whether we need to set width or not.
-            if (child.getMeasuredWidth() != cacheWidth) {
-                TableViewUtils.setWidth(child, cacheWidth);
-            }
-        } else {
-            View columnHeaderChild = mColumnHeaderLayoutManager.findViewByPosition(columnPosition);
-            if (columnHeaderChild == null) {
-                return;
-            }
-
-            // Need to calculate which one has the broadest width ?
-//            fitWidthSize(child, mYPosition, columnPosition, cacheWidth, columnCacheWidth,
-//                    columnHeaderChild);
-        }
-
-        // Control all of the rows which has same column position.
-        if (shouldFitColumns(columnPosition, mYPosition)) {
-            if (mLastDx < 0) {
-                Log.e(LOG_TAG, "x: " + columnPosition + " y: " + mYPosition + " fitWidthSize " +
-                        "left side ");
-//                mCellLayoutManager.fitWidthSize(columnPosition, true);
-            } else {
-//                mCellLayoutManager.fitWidthSize(columnPosition, false);
-                Log.e(LOG_TAG, "x: " + columnPosition + " y: " + mYPosition + " fitWidthSize " +
-                        "right side");
-            }
-            mNeedFitForVerticalScroll = false;
-        }
-
-        // It need to be cleared to prevent unnecessary calculation.
-        mNeedFitForHorizontalScroll = false;
-    }
+    // TODO see if we need to bring back all the measureChild methods from before
+//    @Override
+//    public void measureChildWithMargins(@NonNull View child, int widthUsed, int heightUsed) {
+//        super.measureChildWithMargins(child, widthUsed, heightUsed);
+//
+//        // If has fixed width is true, than calculation of the column width is not necessary.
+//        if (mTableView.hasFixedWidth()) {
+//            return;
+//        }
+//
+//        measureChild(child, widthUsed, heightUsed);
+//    }
+//
+//    @Override
+//    public void measureChild(@NonNull View child, int widthUsed, int heightUsed) {
+//
+//        int columnPosition = getPosition(child);
+//
+//        // Get cached width size of column and cell
+//        int cacheWidth = mCellLayoutManager.getCacheWidth(mYPosition, columnPosition);
+//        int columnCacheWidth = mColumnHeaderLayoutManager.getCacheWidth(columnPosition);
+//
+//        // Already each of them is same width size.
+//        if (cacheWidth != -1 && cacheWidth == columnCacheWidth) {
+//            // Control whether we need to set width or not.
+//            if (child.getMeasuredWidth() != cacheWidth) {
+//                TableViewUtils.setWidth(child, cacheWidth);
+//            }
+//        } else {
+//            View columnHeaderChild = mColumnHeaderLayoutManager.findViewByPosition(columnPosition);
+//            if (columnHeaderChild == null) {
+//                return;
+//            }
+//
+//            // Need to calculate which one has the broadest width ?
+////            fitWidthSize(child, mYPosition, columnPosition, cacheWidth, columnCacheWidth,
+////                    columnHeaderChild);
+//        }
+//
+//        // Control all of the rows which has same column position.
+//        if (shouldFitColumns(columnPosition, mYPosition)) {
+//            if (mLastDx < 0) {
+//                Log.e(LOG_TAG, "x: " + columnPosition + " y: " + mYPosition + " fitWidthSize " +
+//                        "left side ");
+////                mCellLayoutManager.fitWidthSize(columnPosition, true);
+//            } else {
+////                mCellLayoutManager.fitWidthSize(columnPosition, false);
+//                Log.e(LOG_TAG, "x: " + columnPosition + " y: " + mYPosition + " fitWidthSize " +
+//                        "right side");
+//            }
+//            mNeedFitForVerticalScroll = false;
+//        }
+//
+//        // It need to be cleared to prevent unnecessary calculation.
+//        mNeedFitForHorizontalScroll = false;
+//    }
 
 //    private void fitWidthSize(@NonNull View child, int row, int column, int cellWidth, int
 //            columnHeaderWidth, @NonNull View columnHeaderChild) {
@@ -205,11 +206,36 @@ public class ColumnLayoutManager extends LinearLayoutManager {
         // It is important to determine the next attached view to fit all columns
         mLastDx = dx;
 
+        // performance tweak. Try increasing setInitialPrefetch Item Count
         // Set the right initialPrefetch size to improve performance
-        this.setInitialPrefetchItemCount(2);
+//        this.setInitialPrefetchItemCount(2);
+
+        this.setInitialPrefetchItemCount(100);
 
         return super.scrollHorizontallyBy(dx, recycler, state);
     }
+
+//    private int mLastDy = 0;
+//    @Override
+//    public int scrollVerticallyBy(int dy, RecyclerView.Recycler recycler, RecyclerView.State
+//            state) {
+////        if (mRowHeaderRecyclerView.getScrollState() == RecyclerView.SCROLL_STATE_IDLE &&
+////                !mRowHeaderRecyclerView.isScrollOthers()) {
+////            // CellRecyclerViews should be scrolled after the RowHeaderRecyclerView.
+////            // Because it is one of the main compared criterion to make each columns fit.
+////            mRowHeaderRecyclerView.scrollBy(0, dy);
+////        }
+//
+//        int scroll = super.scrollVerticallyBy(dy, recycler, state);
+//
+//        // performance tweak; see if this fixes anything scrollVerticallyBy in CellLayoutManager
+//        this.setInitialPrefetchItemCount(100);
+//
+//
+//        // It is important to determine right position to fit all columns which are the same y pos.
+//        mLastDy = dy;
+//        return scroll;
+//    }
 
     private int getRowPosition() {
         return mCellLayoutManager.getPosition(mCellRowRecyclerView);

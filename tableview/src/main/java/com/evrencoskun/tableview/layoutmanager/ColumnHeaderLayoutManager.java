@@ -54,36 +54,36 @@ public class ColumnHeaderLayoutManager extends LinearLayoutManager {
         this.setOrientation(ColumnHeaderLayoutManager.HORIZONTAL);
     }
 
-    @Override
-    public void measureChildWithMargins(@NonNull View child, int widthUsed, int heightUsed) {
-        super.measureChildWithMargins(child, widthUsed, heightUsed);
-
-        // If has fixed width is true, than calculation of the column width is not necessary.
-        if (mTableView.hasFixedWidth()) {
-            return;
-        }
-
-        measureChild(child, widthUsed, heightUsed);
-    }
-
-    @Override
-    public void measureChild(@NonNull View child, int widthUsed, int heightUsed) {
-        // If has fixed width is true, than calculation of the column width is not necessary.
-        if (mTableView.hasFixedWidth()) {
-            super.measureChild(child, widthUsed, heightUsed);
-            return;
-        }
-
-        int position = getPosition(child);
-        int cacheWidth = getCacheWidth(position);
-
-        // If the width value of the cell has already calculated, then set the value
-        if (cacheWidth != -1) {
-            TableViewUtils.setWidth(child, cacheWidth);
-        } else {
-            super.measureChild(child, widthUsed, heightUsed);
-        }
-    }
+//    @Override
+//    public void measureChildWithMargins(@NonNull View child, int widthUsed, int heightUsed) {
+//        super.measureChildWithMargins(child, widthUsed, heightUsed);
+//
+//        // If has fixed width is true, than calculation of the column width is not necessary.
+//        if (mTableView.hasFixedWidth()) {
+//            return;
+//        }
+//
+//        measureChild(child, widthUsed, heightUsed);
+//    }
+//
+//    @Override
+//    public void measureChild(@NonNull View child, int widthUsed, int heightUsed) {
+//        // If has fixed width is true, than calculation of the column width is not necessary.
+//        if (mTableView.hasFixedWidth()) {
+//            super.measureChild(child, widthUsed, heightUsed);
+//            return;
+//        }
+//
+//        int position = getPosition(child);
+//        int cacheWidth = getCacheWidth(position);
+//
+//        // If the width value of the cell has already calculated, then set the value
+//        if (cacheWidth != -1) {
+//            TableViewUtils.setWidth(child, cacheWidth);
+//        } else {
+//            super.measureChild(child, widthUsed, heightUsed);
+//        }
+//    }
 
     public void setCacheWidth(int position, int width) {
         mCachedWidthList.put(position, width);

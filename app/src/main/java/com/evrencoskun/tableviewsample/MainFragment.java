@@ -131,7 +131,7 @@ public class MainFragment extends Fragment {
         tableViewAdapter.setAllItems(tableViewModel.getColumnHeaderList(), tableViewModel
                 .getRowHeaderList(), tableViewModel.getCellList());
 
-        //mTableView.setHasFixedWidth(true);
+//        mTableView.setHasFixedWidth(true);
 
         /*for (int i = 0; i < mTableViewModel.getCellList().size(); i++) {
             mTableView.setColumnWidth(i, 200);

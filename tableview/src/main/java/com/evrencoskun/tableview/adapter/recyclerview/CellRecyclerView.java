@@ -67,7 +67,7 @@ public class CellRecyclerView extends RecyclerView {
 //        this.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
 
         // performance tweak
-        this.setItemViewCacheSize(100); // Adjust cache size as needed
+        this.setItemViewCacheSize(50); // Adjust cache size as needed
         this.setDrawingCacheEnabled(true);
         this.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_LOW);
 
@@ -170,8 +170,8 @@ public class CellRecyclerView extends RecyclerView {
     @Override
     public boolean fling(int velocityX, int velocityY) {
         // Adjust speeds to be able to provide smoother scroll.
-        velocityX = (int) (velocityX * 0.1); // Adjust this factor to fine-tune
-        velocityY = (int) (velocityY * 0.1); // Adjust this factor to fine-tune
+        velocityX = (int) (velocityX * 0.6); // Adjust this factor to fine-tune
+        velocityY = (int) (velocityY * 0.6); // Adjust this factor to fine-tune
         return super.fling(velocityX, velocityY);
     }
 }

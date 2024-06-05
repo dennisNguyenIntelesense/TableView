@@ -85,8 +85,8 @@ public class CellLayoutManager extends LinearLayoutManager {
         this.setOrientation(VERTICAL);
         // Add new one
 
-        // TODO performance tweak
-        this.setInitialPrefetchItemCount(50);
+        // TODO performance tweak; check where to setInitialPrefetchItemCount
+        this.setInitialPrefetchItemCount(100);
     }
 
     @Override
@@ -110,6 +110,10 @@ public class CellLayoutManager extends LinearLayoutManager {
         }
 
         int scroll = super.scrollVerticallyBy(dy, recycler, state);
+
+        // performance tweak; see if this fixes anything scrollVerticallyBy in CellLayoutManager
+        this.setInitialPrefetchItemCount(100);
+
 
         // It is important to determine right position to fit all columns which are the same y pos.
         mLastDy = dy;
@@ -394,65 +398,66 @@ public class CellLayoutManager extends LinearLayoutManager {
         return false;
     }
 
-    @Override
-    public void measureChildWithMargins(@NonNull View child, int widthUsed, int heightUsed) {
-        super.measureChildWithMargins(child, widthUsed, heightUsed);
-
-        // If has fixed width is true, than calculation of the column width is not necessary.
-        if (mTableView.hasFixedWidth()) {
-            return;
-        }
-
-        int position = getPosition(child);
-
-        ColumnLayoutManager childLayoutManager = (ColumnLayoutManager) ((CellRecyclerView) child)
-                .getLayoutManager();
-
-        // the below codes should be worked when it is scrolling vertically
-        if (getCellRecyclerViewScrollState() != RecyclerView.SCROLL_STATE_IDLE) {
-            if (childLayoutManager.isNeedFit()) {
-
-                // Scrolling up
-//                if (mLastDy < 0) {
-//                    Log.e(LOG_TAG, position + " fitWidthSize all vertically up");
-//                    fitWidthSize(true);
-//                } else {
-//                    // Scrolling down
-//                    Log.e(LOG_TAG, position + " fitWidthSize all vertically down");
-//                    fitWidthSize(false);
+    // performance tweak; see if this breaks anything
+//    @Override
+//    public void measureChildWithMargins(@NonNull View child, int widthUsed, int heightUsed) {
+//        super.measureChildWithMargins(child, widthUsed, heightUsed);
+//
+//        // If has fixed width is true, than calculation of the column width is not necessary.
+//        if (mTableView.hasFixedWidth()) {
+//            return;
+//        }
+//
+//        int position = getPosition(child);
+//
+//        ColumnLayoutManager childLayoutManager = (ColumnLayoutManager) ((CellRecyclerView) child)
+//                .getLayoutManager();
+//
+//        // the below codes should be worked when it is scrolling vertically
+//        if (getCellRecyclerViewScrollState() != RecyclerView.SCROLL_STATE_IDLE) {
+//            if (childLayoutManager.isNeedFit()) {
+//
+//                // Scrolling up
+////                if (mLastDy < 0) {
+////                    Log.e(LOG_TAG, position + " fitWidthSize all vertically up");
+////                    fitWidthSize(true);
+////                } else {
+////                    // Scrolling down
+////                    Log.e(LOG_TAG, position + " fitWidthSize all vertically down");
+////                    fitWidthSize(false);
+////                }
+//                // all columns have been fitted.
+//                childLayoutManager.clearNeedFit();
+//            }
+//
+//            // Set the right initialPrefetch size to improve performance
+//            childLayoutManager.setInitialPrefetchItemCount(childLayoutManager.getChildCount());
+//
+//            // That means,populating for the first time like fetching all data to display.
+//            // It shouldn't be worked when it is scrolling horizontally ."getLastDx() == 0"
+//            // control for it.
+//        } else if (childLayoutManager.getLastDx() == 0 && getCellRecyclerViewScrollState() ==
+//                RecyclerView.SCROLL_STATE_IDLE) {
+//
+//            if (childLayoutManager.isNeedFit()) {
+//                mNeedFit = true;
+//
+//                // all columns have been fitted.
+//                childLayoutManager.clearNeedFit();
+//            }
+//
+//            if (mNeedFit) {
+//                // for the first time to populate adapter
+//                if (mTableView.getRowHeaderLayoutManager().findLastVisibleItemPosition() == position) {
+//
+////                    fitWidthSize2(false);
+////                    Log.e(LOG_TAG, position + " fitWidthSize populating data for the first time");
+//
+//                    mNeedFit = false;
 //                }
-                // all columns have been fitted.
-                childLayoutManager.clearNeedFit();
-            }
-
-            // Set the right initialPrefetch size to improve performance
-            childLayoutManager.setInitialPrefetchItemCount(childLayoutManager.getChildCount());
-
-            // That means,populating for the first time like fetching all data to display.
-            // It shouldn't be worked when it is scrolling horizontally ."getLastDx() == 0"
-            // control for it.
-        } else if (childLayoutManager.getLastDx() == 0 && getCellRecyclerViewScrollState() ==
-                RecyclerView.SCROLL_STATE_IDLE) {
-
-            if (childLayoutManager.isNeedFit()) {
-                mNeedFit = true;
-
-                // all columns have been fitted.
-                childLayoutManager.clearNeedFit();
-            }
-
-            if (mNeedFit) {
-                // for the first time to populate adapter
-                if (mTableView.getRowHeaderLayoutManager().findLastVisibleItemPosition() == position) {
-
-//                    fitWidthSize2(false);
-//                    Log.e(LOG_TAG, position + " fitWidthSize populating data for the first time");
-
-                    mNeedFit = false;
-                }
-            }
-        }
-    }
+//            }
+//        }
+//    }
 
     @NonNull
     public AbstractViewHolder[] getVisibleCellViewsByColumnPosition(int xPosition) {
@@ -557,6 +562,17 @@ public class CellLayoutManager extends LinearLayoutManager {
         smoothScroller.setTargetPosition(position);
         startSmoothScroll(smoothScroller);
     }
+
+//    // performance tweak; see if these two actually do anything
+//    @Override
+//    public int computeVerticalScrollRange(RecyclerView.State state) {
+//        return 5000;
+//    }
+//
+//    @Override
+//    public int computeVerticalScrollOffset(RecyclerView.State state) {
+//        return (int) (super.computeVerticalScrollOffset(state) / 23.5f);
+//    }
 
 }
 

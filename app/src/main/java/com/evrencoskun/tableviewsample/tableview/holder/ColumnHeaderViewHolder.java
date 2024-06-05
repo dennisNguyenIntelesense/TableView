@@ -83,7 +83,7 @@ public class ColumnHeaderViewHolder extends AbstractSorterViewHolder {
 
 
         // Set the width of column_header_container and column_header_textview to 70dp
-        int widthInDp = 70;
+        int widthInDp = 80;
         float scale = itemView.getContext().getResources().getDisplayMetrics().density;
         int widthInPx = (int) (widthInDp * scale + 0.5f); // Convert dp to pixels
 

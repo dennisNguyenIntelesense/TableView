@@ -61,6 +61,8 @@ public class TableViewLayoutChangeListener implements View.OnLayoutChangeListene
             // Control who need the remeasure
             if (mColumnHeaderRecyclerView.getWidth() > mCellRecyclerView.getWidth()) {
                 // Remeasure all nested CellRow recyclerViews
+
+                // performance tweak; see if disabling this does anything or if it breaks things
                 mCellLayoutManager.remeasureAllChild();
 
             } else if (mCellRecyclerView.getWidth() > mColumnHeaderRecyclerView.getWidth()) {
