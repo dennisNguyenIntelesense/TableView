@@ -28,12 +28,12 @@ import android.content.Context;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.DecelerateInterpolator;
+import android.widget.OverScroller;
 
 import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.LinearSmoothScroller;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.evrencoskun.tableview.R;
 import com.evrencoskun.tableview.listener.scroll.HorizontalRecyclerViewListener;
 import com.evrencoskun.tableview.listener.scroll.VerticalRecyclerViewListener;
 
@@ -49,6 +49,8 @@ public class CellRecyclerView extends RecyclerView {
 
     private boolean mIsHorizontalScrollListenerRemoved = true;
     private boolean mIsVerticalScrollListenerRemoved = true;
+
+
 
     public CellRecyclerView(@NonNull Context context) {
         super(context);
@@ -67,12 +69,15 @@ public class CellRecyclerView extends RecyclerView {
 //        this.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
 
         // performance tweak
-        this.setItemViewCacheSize(50); // Adjust cache size as needed
+        this.setItemViewCacheSize(100); // Adjust cache size as needed
         this.setDrawingCacheEnabled(true);
-        this.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_LOW);
+        this.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
 
         // TODO get rid of this if it doesn't work
         this.setLayerType(View.LAYER_TYPE_HARDWARE, null);
+
+
+
     }
 
     @Override
@@ -169,9 +174,26 @@ public class CellRecyclerView extends RecyclerView {
     // TODO performance tweaks
     @Override
     public boolean fling(int velocityX, int velocityY) {
-        // Adjust speeds to be able to provide smoother scroll.
+
+        int maxVelocityX = 4000;
+        int maxVelocityY = 4000;
+
+        // Cap the velocities
+        velocityX = Math.min(velocityX, maxVelocityX);
+        velocityY = Math.min(velocityY, maxVelocityY);
+
+        // Adjust speeds to be able to provide smoother scroll
         velocityX = (int) (velocityX * 0.6); // Adjust this factor to fine-tune
         velocityY = (int) (velocityY * 0.6); // Adjust this factor to fine-tune
+
         return super.fling(velocityX, velocityY);
     }
+
+
+
+
 }
+
+
+
+

@@ -54,14 +54,12 @@ import com.evrencoskun.tableview.listener.itemclick.RowHeaderRecyclerViewItemCli
 import com.evrencoskun.tableview.listener.scroll.HorizontalRecyclerViewListener;
 import com.evrencoskun.tableview.listener.scroll.VerticalRecyclerViewListener;
 import com.evrencoskun.tableview.preference.SavedState;
-import com.evrencoskun.tableview.sort.SortState;
 
 import androidx.annotation.AttrRes;
 import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
-import androidx.core.widget.NestedScrollView;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
@@ -339,6 +337,7 @@ public class TableView extends FrameLayout implements ITableView {
         mColumnHeaderRecyclerView.addOnLayoutChangeListener(layoutChangeListener);
         mCellRecyclerView.addOnLayoutChangeListener(layoutChangeListener);
 
+
     }
 
     // creates HorizontalScrollView that will contain both columnHeader and cell recyclerViews
@@ -377,8 +376,14 @@ public class TableView extends FrameLayout implements ITableView {
     protected CellRecyclerView createColumnHeaderRecyclerView() {
         CellRecyclerView recyclerView = new CellRecyclerView(getContext());
 
-        // Set layout manager
-        recyclerView.setLayoutManager(getColumnHeaderLayoutManager());
+        // Set layout manager; original implementation
+//        recyclerView.setLayoutManager(getColumnHeaderLayoutManager());
+
+        // new implementation performance tweak to enable smooth scrolling attempt
+        ColumnHeaderLayoutManager columnHeaderLayoutManager = getColumnHeaderLayoutManager();
+        columnHeaderLayoutManager.setSmoothScrollbarEnabled(true); // Add this line
+        columnHeaderLayoutManager.setRecycleChildrenOnDetach(true);
+        recyclerView.setLayoutManager(columnHeaderLayoutManager);
 
         // TODO uncomment out setting layout params
         // Set layout params
@@ -405,8 +410,14 @@ public class TableView extends FrameLayout implements ITableView {
     protected CellRecyclerView createRowHeaderRecyclerView() {
         CellRecyclerView recyclerView = new CellRecyclerView(getContext());
 
-        // Set layout manager
-        recyclerView.setLayoutManager(getRowHeaderLayoutManager());
+//        // Set layout manager old implementation
+//        recyclerView.setLayoutManager(getRowHeaderLayoutManager());
+
+        // new implementation performance tweak to enable smooth scrolling attempt
+        LinearLayoutManager rowHeaderLayoutManager = getRowHeaderLayoutManager();
+        rowHeaderLayoutManager.setSmoothScrollbarEnabled(true); // Add this line
+        rowHeaderLayoutManager.setRecycleChildrenOnDetach(true);
+        recyclerView.setLayoutManager(rowHeaderLayoutManager);
 
         // Set layout params
         // TODO change layout params back
@@ -438,8 +449,14 @@ public class TableView extends FrameLayout implements ITableView {
         // Disable multitouch
         recyclerView.setMotionEventSplittingEnabled(false);
 
-        // Set layout manager
-        recyclerView.setLayoutManager(getCellLayoutManager());
+//        // Set layout manager old implementation
+//        recyclerView.setLayoutManager(getCellLayoutManager());
+
+        // new implementation performance tweak to enable smooth scrolling attempt
+        LinearLayoutManager cellLayoutManager = getCellLayoutManager();
+        cellLayoutManager.setSmoothScrollbarEnabled(true); // Add this line
+        cellLayoutManager.setRecycleChildrenOnDetach(true);
+        recyclerView.setLayoutManager(cellLayoutManager);
 
         // TODO uncomment out setting layout params
         // Set layout params

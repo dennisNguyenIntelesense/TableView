@@ -31,6 +31,7 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.evrencoskun.tableview.ITableView;
 import com.evrencoskun.tableview.adapter.recyclerview.holder.AbstractViewHolder;
@@ -50,6 +51,8 @@ public class ColumnHeaderLayoutManager extends LinearLayoutManager {
     public ColumnHeaderLayoutManager(@NonNull Context context, @NonNull ITableView tableView) {
         super(context);
         mTableView = tableView;
+
+        this.setInitialPrefetchItemCount(25);
 
         this.setOrientation(ColumnHeaderLayoutManager.HORIZONTAL);
     }
@@ -108,9 +111,10 @@ public class ColumnHeaderLayoutManager extends LinearLayoutManager {
     /**
      * Clears the widths which have been calculated and reused.
      */
-    public void clearCachedWidths() {
-        mCachedWidthList.clear();
-    }
+    // performance tweak TODO see if this is needed anywhere
+//    public void clearCachedWidths() {
+//        mCachedWidthList.clear();
+//    }
 
     public void customRequestLayout() {
         int left = getFirstItemLeft();
@@ -153,5 +157,7 @@ public class ColumnHeaderLayoutManager extends LinearLayoutManager {
         return (AbstractViewHolder) mTableView.getColumnHeaderRecyclerView()
                 .findViewHolderForAdapterPosition(xPosition);
     }
+
+
 
 }

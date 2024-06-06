@@ -65,6 +65,9 @@ public class ColumnLayoutManager extends LinearLayoutManager {
         this.mColumnHeaderLayoutManager = mTableView.getColumnHeaderLayoutManager();
         this.mCellLayoutManager = mTableView.getCellLayoutManager();
 
+        // performance tweak see if it's better to place this in constructor instead of scrollHorizontallyBy
+        this.setInitialPrefetchItemCount(25);
+
         // Set default orientation
         this.setOrientation(ColumnLayoutManager.HORIZONTAL);
 
@@ -210,7 +213,7 @@ public class ColumnLayoutManager extends LinearLayoutManager {
         // Set the right initialPrefetch size to improve performance
 //        this.setInitialPrefetchItemCount(2);
 
-        this.setInitialPrefetchItemCount(100);
+//        this.setInitialPrefetchItemCount(20);
 
         return super.scrollHorizontallyBy(dx, recycler, state);
     }
@@ -268,4 +271,15 @@ public class ColumnLayoutManager extends LinearLayoutManager {
         }
         return views;
     }
+
+
+//    // performance tweak
+//    @Override
+//    protected void calculateExtraLayoutSpace(@NonNull RecyclerView.State state, int[] extraLayoutSpace) {
+//        // Customize the amount of extra layout space
+//        int extraSpace = 3000; // Adjust this value as needed
+//        extraLayoutSpace[0] = extraSpace;
+//        extraLayoutSpace[1] = extraSpace;
+//    }
+
 }

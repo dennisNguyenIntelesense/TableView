@@ -86,7 +86,7 @@ public class CellLayoutManager extends LinearLayoutManager {
         // Add new one
 
         // TODO performance tweak; check where to setInitialPrefetchItemCount
-        this.setInitialPrefetchItemCount(100);
+        this.setInitialPrefetchItemCount(50);
     }
 
     @Override
@@ -110,9 +110,6 @@ public class CellLayoutManager extends LinearLayoutManager {
         }
 
         int scroll = super.scrollVerticallyBy(dy, recycler, state);
-
-        // performance tweak; see if this fixes anything scrollVerticallyBy in CellLayoutManager
-        this.setInitialPrefetchItemCount(100);
 
 
         // It is important to determine right position to fit all columns which are the same y pos.
@@ -533,9 +530,10 @@ public class CellLayoutManager extends LinearLayoutManager {
     /**
      * Clears the widths which have been calculated and reused.
      */
-    public void clearCachedWidths() {
-        mCachedWidthList.clear();
-    }
+    // performance tweaks see if commenting out clearing cache widths works
+//    public void clearCachedWidths() {
+//        mCachedWidthList.clear();
+//    }
 
     @NonNull
     public CellRecyclerView[] getVisibleCellRowRecyclerViews() {
@@ -574,6 +572,7 @@ public class CellLayoutManager extends LinearLayoutManager {
 //        return (int) (super.computeVerticalScrollOffset(state) / 23.5f);
 //    }
 
+
 }
 
 
@@ -587,6 +586,6 @@ class CustomSmoothScroller extends LinearSmoothScroller {
     @Override
     protected float calculateSpeedPerPixel(DisplayMetrics displayMetrics) {
         // Adjust this value to change the scrolling speed (lower = faster)
-        return 25f / displayMetrics.densityDpi;
+        return 50f / displayMetrics.densityDpi;
     }
 }
