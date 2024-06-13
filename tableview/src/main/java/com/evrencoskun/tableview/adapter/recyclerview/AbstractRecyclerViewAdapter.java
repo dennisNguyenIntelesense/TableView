@@ -28,6 +28,7 @@ import android.content.Context;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.evrencoskun.tableview.adapter.recyclerview.holder.AbstractViewHolder;
@@ -78,12 +79,24 @@ public abstract class AbstractRecyclerViewAdapter<T> extends RecyclerView
         this.notifyDataSetChanged();
     }
 
-    public void setItems(@NonNull List<T> itemList, boolean notifyDataSet) {
-        mItemList = new ArrayList<>(itemList);
+//    public void setItems(@NonNull List<T> itemList, boolean notifyDataSet) {
+//        mItemList = new ArrayList<>(itemList);
+//
+//        if (notifyDataSet) {
+//            this.notifyDataSetChanged();
+//        }
+//    }
 
-        if (notifyDataSet) {
-            this.notifyDataSetChanged();
-        }
+    public void setItems(@NonNull List<T> itemList, boolean notifydataSet) {
+        // Calculate the differences
+        DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(new ItemDiffCallback<>(mItemList, itemList));
+
+        // Update the list
+        mItemList.clear();
+        mItemList.addAll(itemList);
+
+        // Notify the adapter about the changes
+        diffResult.dispatchUpdatesTo(this);
     }
 
     @Nullable
@@ -147,5 +160,50 @@ public abstract class AbstractRecyclerViewAdapter<T> extends RecyclerView
     @Override
     public int getItemViewType(int position) {
         return 1;
+    }
+
+    class ItemDiffCallback<T> extends DiffUtil.Callback {
+
+        private final List<T> oldList;
+        private final List<T> newList;
+
+        public ItemDiffCallback(List<T> oldList, List<T> newList) {
+            this.oldList = oldList;
+            this.newList = newList;
+        }
+
+        @Override
+        public int getOldListSize() {
+            return oldList.size();
+        }
+
+        @Override
+        public int getNewListSize() {
+            return newList.size();
+        }
+
+        @Override
+        public boolean areItemsTheSame(int oldItemPosition, int newItemPosition) {
+            T oldItem = oldList.get(oldItemPosition);
+            T newItem = newList.get(newItemPosition);
+
+            if (oldItem instanceof List && newItem instanceof List) {
+                List<?> oldSubList = (List<?>) oldItem;
+                List<?> newSubList = (List<?>) newItem;
+                return oldSubList.size() == newSubList.size() && oldSubList.equals(newSubList);
+            }
+
+            return oldItem.equals(newItem);
+        }
+
+        @Override
+        public boolean areContentsTheSame(int oldItemPosition, int newItemPosition) {
+            T oldItem = oldList.get(oldItemPosition);
+            T newItem = newList.get(newItemPosition);
+
+            // Implement this method to check if the contents of items are the same
+            return oldItem.equals(newItem);
+        }
+
     }
 }
