@@ -269,6 +269,7 @@ public class TableView extends FrameLayout implements ITableView {
         initializeListeners();
     }
 
+    // TODO make this protected again
     protected void initializeListeners() {
 
         // --- Listeners to help Scroll synchronously ---

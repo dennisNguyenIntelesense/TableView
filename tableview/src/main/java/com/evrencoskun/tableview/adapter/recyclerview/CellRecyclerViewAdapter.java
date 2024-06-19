@@ -43,6 +43,7 @@ import com.evrencoskun.tableview.listener.itemclick.CellRecyclerViewItemClickLis
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Created by evrencoskun on 10/06/2017.
@@ -66,6 +67,25 @@ public class CellRecyclerViewAdapter<C> extends AbstractRecyclerViewAdapter<C> {
         mRecycledViewPool = new RecyclerView.RecycledViewPool();
         //TODO set the right value.
         //mRecycledViewPool.setMaxRecycledViews(0, 110);
+    }
+
+    // getter method that grabs all the CellRowRecyclerViewAdapters
+    public List<CellRowRecyclerViewAdapter> getAllRowAdapters() {
+        List<CellRowRecyclerViewAdapter> adapters = new ArrayList<>();
+
+        // Assuming `mCellRecyclerView` is your main RecyclerView that contains all the rows
+        int itemCount = Objects.requireNonNull(mTableView.getCellRecyclerView().getAdapter()).getItemCount();
+        for (int i = 0; i < itemCount; i++) {
+            RecyclerView.ViewHolder holder = mTableView.getCellRecyclerView().findViewHolderForAdapterPosition(i);
+            if (holder instanceof CellRowViewHolder) {
+                CellRowViewHolder rowViewHolder = (CellRowViewHolder) holder;
+                RecyclerView.Adapter adapter = rowViewHolder.recyclerView.getAdapter();
+                if (adapter instanceof CellRowRecyclerViewAdapter) {
+                    adapters.add((CellRowRecyclerViewAdapter) adapter);
+                }
+            }
+        }
+        return adapters;
     }
 
     @NonNull
@@ -138,6 +158,7 @@ public class CellRecyclerViewAdapter<C> extends AbstractRecyclerViewAdapter<C> {
         ScrollHandler scrollHandler = mTableView.getScrollHandler();
 
         // The below code helps to display a new attached recyclerView on exact scrolled position.
+        // TODO manage scroll-syncing scroll out of sync issue maybe turn off?
         ((ColumnLayoutManager) viewHolder.recyclerView.getLayoutManager())
                 .scrollToPositionWithOffset(scrollHandler.getColumnPosition(), scrollHandler
                         .getColumnPositionOffset());
@@ -151,6 +172,7 @@ public class CellRecyclerViewAdapter<C> extends AbstractRecyclerViewAdapter<C> {
 
             if (cellViewHolder != null) {
                 // Control to ignore selection color
+                // TODO turn this back on to control column selection color
                 if (!mTableView.isIgnoreSelectionColors()) {
                     cellViewHolder.setBackgroundColor(mTableView.getSelectedColor());
                 }
@@ -172,20 +194,39 @@ public class CellRecyclerViewAdapter<C> extends AbstractRecyclerViewAdapter<C> {
         // Clear selection status of the view holder
         mTableView.getSelectionHandler().changeSelectionOfRecyclerView(((CellRowViewHolder)
                 holder).recyclerView, SelectionState.UNSELECTED, mTableView.getUnSelectedColor());
+
+//        // TODO comment this attempt out
+//        CellRowViewHolder viewHolder = (CellRowViewHolder) holder;
+//        CellRowRecyclerViewAdapter adapter = (CellRowRecyclerViewAdapter) viewHolder.recyclerView.getAdapter();
+//        if (adapter != null) {
+//            adapter.setYPosition(-1);  // Reset yPosition
+//        }
     }
 
     @Override
     public void onViewRecycled(@NonNull AbstractViewHolder holder) {
         super.onViewRecycled(holder);
 
+        // TODO uncomment this old implementation
         CellRowViewHolder viewHolder = (CellRowViewHolder) holder;
         // ScrolledX should be cleared at that time. Because we need to prepare each
         // recyclerView
         // at onViewAttachedToWindow process.
         viewHolder.recyclerView.clearScrolledX();
+
+        // TODO comment out this attempt at clearing out Ypositions
+//        if (holder instanceof CellRowViewHolder) {
+//            CellRowViewHolder viewHolder = (CellRowViewHolder) holder;
+//            viewHolder.recyclerView.clearScrolledX();
+//            CellRowRecyclerViewAdapter adapter = (CellRowRecyclerViewAdapter) viewHolder.recyclerView.getAdapter();
+//            if (adapter != null) {
+//                adapter.setYPosition(-1);  // Reset yPosition or set to a default invalid position
+//            }
+//        }
     }
 
-    static class CellRowViewHolder extends AbstractViewHolder {
+    // TODO get rid of public visibility modifier later
+    public static class CellRowViewHolder extends AbstractViewHolder {
         final CellRecyclerView recyclerView;
 
         CellRowViewHolder(@NonNull View itemView) {
