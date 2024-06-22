@@ -33,9 +33,11 @@ import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 
 import com.evrencoskun.tableview.adapter.AbstractTableAdapter;
 import com.evrencoskun.tableview.adapter.recyclerview.CellRecyclerView;
+import com.evrencoskun.tableview.adapter.recyclerview.NonScrollableHorizontalCellRecyclerView;
 import com.evrencoskun.tableview.adapter.recyclerview.holder.AbstractViewHolder;
 //import com.evrencoskun.tableview.filter.Filter;
 //import com.evrencoskun.tableview.handler.ColumnSortHandler;
@@ -47,6 +49,7 @@ import com.evrencoskun.tableview.handler.SelectionHandler;
 import com.evrencoskun.tableview.handler.VisibilityHandler;
 import com.evrencoskun.tableview.layoutmanager.CellLayoutManager;
 import com.evrencoskun.tableview.layoutmanager.ColumnHeaderLayoutManager;
+import com.evrencoskun.tableview.layoutmanager.NonScrollableLinearLayoutManager;
 import com.evrencoskun.tableview.listener.ITableViewListener;
 import com.evrencoskun.tableview.listener.TableViewLayoutChangeListener;
 import com.evrencoskun.tableview.listener.itemclick.ColumnHeaderRecyclerViewItemClickListener;
@@ -74,8 +77,13 @@ public class TableView extends FrameLayout implements ITableView {
     protected CellRecyclerView mCellRecyclerView;
     @NonNull
     protected CellRecyclerView mColumnHeaderRecyclerView;
+//    @NonNull
+//    protected CellRecyclerView mRowHeaderRecyclerView;
+
+    // TODO comment this out if it doesn't work
     @NonNull
     protected CellRecyclerView mRowHeaderRecyclerView;
+
     @Nullable
     protected AbstractTableAdapter mTableAdapter;
     @Nullable
@@ -344,7 +352,11 @@ public class TableView extends FrameLayout implements ITableView {
 
     @NonNull
     protected CellRecyclerView createRowHeaderRecyclerView() {
-        CellRecyclerView recyclerView = new CellRecyclerView(getContext());
+        // TODO uncomment this if below doesn't work
+//        CellRecyclerView recyclerView = new CellRecyclerView(getContext());
+
+        CellRecyclerView recyclerView = new NonScrollableHorizontalCellRecyclerView(getContext());
+
 
         // Set layout manager
         recyclerView.setLayoutManager(getRowHeaderLayoutManager());
@@ -519,8 +531,16 @@ public class TableView extends FrameLayout implements ITableView {
     @Override
     public LinearLayoutManager getRowHeaderLayoutManager() {
         if (mRowHeaderLayoutManager == null) {
-            mRowHeaderLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager
-                    .VERTICAL, false);
+
+            // TODO uncomment out old implementation horizontal scrolling disable attempt
+//            mRowHeaderLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager
+//                    .VERTICAL, false);
+
+            mRowHeaderLayoutManager = new NonScrollableLinearLayoutManager(
+                    getContext(),
+                    LinearLayoutManager.VERTICAL,
+                    false
+            );
         }
         return mRowHeaderLayoutManager;
     }
