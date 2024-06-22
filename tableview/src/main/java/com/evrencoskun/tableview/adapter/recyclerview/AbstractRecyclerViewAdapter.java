@@ -131,6 +131,13 @@ public abstract class AbstractRecyclerViewAdapter<T> extends RecyclerView
         }
     }
 
+    public void appendItem(@Nullable T item) {
+        if (item != null) {
+            mItemList.add(item);
+            notifyItemInserted(mItemList.size() - 1);
+        }
+    }
+
     public void addItemRange(int positionStart, @Nullable List<T> items) {
         if (items != null) {
             for (int i = 0; i < items.size(); i++) {

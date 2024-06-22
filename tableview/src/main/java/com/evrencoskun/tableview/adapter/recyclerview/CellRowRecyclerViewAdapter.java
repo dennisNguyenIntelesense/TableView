@@ -48,10 +48,22 @@ public class CellRowRecyclerViewAdapter<C> extends AbstractRecyclerViewAdapter<C
     @NonNull
     private final ITableView mTableView;
 
+    // TODO remove this if it doesn't work
+    private OnCellClickListener cellClickListener;
+
     public CellRowRecyclerViewAdapter(@NonNull Context context, @NonNull ITableView tableView) {
         super(context, null);
         this.mTableAdapter = tableView.getAdapter();
         this.mTableView = tableView;
+    }
+
+    // TODO remove this if it doesn't work
+    public interface OnCellClickListener {
+        void onCellClicked(AbstractViewHolder holder, int xPosition);
+    }
+
+    public void setOnCellClickListener(OnCellClickListener listener) {
+        this.cellClickListener = listener;
     }
 
     @NonNull
@@ -62,6 +74,11 @@ public class CellRowRecyclerViewAdapter<C> extends AbstractRecyclerViewAdapter<C
 
     @Override
     public void onBindViewHolder(@NonNull final AbstractViewHolder holder, final int xPosition) {
+        holder.itemView.setOnClickListener(view -> {
+            if (cellClickListener != null) {
+                cellClickListener.onCellClicked(holder, xPosition);
+            }
+        });
         mTableAdapter.onBindCellViewHolder(holder, getItem(xPosition), xPosition, mYPosition);
     }
 

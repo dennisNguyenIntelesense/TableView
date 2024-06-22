@@ -25,6 +25,7 @@
 package com.evrencoskun.tableview.adapter.recyclerview;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -69,20 +70,14 @@ public class CellRecyclerViewAdapter<C> extends AbstractRecyclerViewAdapter<C> {
         //mRecycledViewPool.setMaxRecycledViews(0, 110);
     }
 
-    // getter method that grabs all the CellRowRecyclerViewAdapters
     public List<CellRowRecyclerViewAdapter> getAllRowAdapters() {
         List<CellRowRecyclerViewAdapter> adapters = new ArrayList<>();
+        for (int i=0; i < mItemList.size(); i++) {
+            RecyclerView cellRowRecyclerView = (RecyclerView) mTableView.getCellLayoutManager().findViewByPosition(i);
 
-        // Assuming `mCellRecyclerView` is your main RecyclerView that contains all the rows
-        int itemCount = Objects.requireNonNull(mTableView.getCellRecyclerView().getAdapter()).getItemCount();
-        for (int i = 0; i < itemCount; i++) {
-            RecyclerView.ViewHolder holder = mTableView.getCellRecyclerView().findViewHolderForAdapterPosition(i);
-            if (holder instanceof CellRowViewHolder) {
-                CellRowViewHolder rowViewHolder = (CellRowViewHolder) holder;
-                RecyclerView.Adapter adapter = rowViewHolder.recyclerView.getAdapter();
-                if (adapter instanceof CellRowRecyclerViewAdapter) {
-                    adapters.add((CellRowRecyclerViewAdapter) adapter);
-                }
+            if (cellRowRecyclerView != null) {
+                CellRowRecyclerViewAdapter adapter = ((CellRowRecyclerViewAdapter) cellRowRecyclerView.getAdapter());
+                adapters.add(adapter);
             }
         }
         return adapters;
@@ -110,10 +105,11 @@ public class CellRecyclerViewAdapter<C> extends AbstractRecyclerViewAdapter<C> {
         recyclerView.addOnItemTouchListener(mTableView.getHorizontalRecyclerViewListener());
 
         // Add Item click listener for cell views
-        if (mTableView.isAllowClickInsideCell()) {
-            recyclerView.addOnItemTouchListener(new CellRecyclerViewItemClickListener(recyclerView,
-                    mTableView));
-        }
+        // TODO turn back addOnItemTouchListener?
+//        if (mTableView.isAllowClickInsideCell()) {
+//            recyclerView.addOnItemTouchListener(new CellRecyclerViewItemClickListener(recyclerView,
+//                    mTableView));
+//        }
 
         // Set the Column layout manager that helps the fit width of the cell and column header
         // and it also helps to locate the scroll position of the horizontal recyclerView
@@ -194,13 +190,6 @@ public class CellRecyclerViewAdapter<C> extends AbstractRecyclerViewAdapter<C> {
         // Clear selection status of the view holder
         mTableView.getSelectionHandler().changeSelectionOfRecyclerView(((CellRowViewHolder)
                 holder).recyclerView, SelectionState.UNSELECTED, mTableView.getUnSelectedColor());
-
-//        // TODO comment this attempt out
-//        CellRowViewHolder viewHolder = (CellRowViewHolder) holder;
-//        CellRowRecyclerViewAdapter adapter = (CellRowRecyclerViewAdapter) viewHolder.recyclerView.getAdapter();
-//        if (adapter != null) {
-//            adapter.setYPosition(-1);  // Reset yPosition
-//        }
     }
 
     @Override
@@ -214,15 +203,6 @@ public class CellRecyclerViewAdapter<C> extends AbstractRecyclerViewAdapter<C> {
         // at onViewAttachedToWindow process.
         viewHolder.recyclerView.clearScrolledX();
 
-        // TODO comment out this attempt at clearing out Ypositions
-//        if (holder instanceof CellRowViewHolder) {
-//            CellRowViewHolder viewHolder = (CellRowViewHolder) holder;
-//            viewHolder.recyclerView.clearScrolledX();
-//            CellRowRecyclerViewAdapter adapter = (CellRowRecyclerViewAdapter) viewHolder.recyclerView.getAdapter();
-//            if (adapter != null) {
-//                adapter.setYPosition(-1);  // Reset yPosition or set to a default invalid position
-//            }
-//        }
     }
 
     // TODO get rid of public visibility modifier later
@@ -345,6 +325,36 @@ public class CellRecyclerViewAdapter<C> extends AbstractRecyclerViewAdapter<C> {
         }
 
         // Change data without notifying. Because we already did for visible recyclerViews.
+        setItems((List<C>) cellItems, false);
+    }
+
+    public void newAddColumnItems(int column, @NonNull List<C> cellColumnItems) {
+        // column should be the same size with existing model list
+        if (cellColumnItems.size() != mItemList.size() || cellColumnItems.contains(null)) {
+            return;
+        }
+        // update all adapters (not just visible ones)
+        for (int i=0; i < mItemList.size(); i++) {
+            RecyclerView cellRowRecyclerView = (RecyclerView) mTableView.getCellLayoutManager().findViewByPosition(i);
+
+            if (cellRowRecyclerView != null) {
+                ((AbstractRecyclerViewAdapter) cellRowRecyclerView.getAdapter()).addItem(column, cellColumnItems.get(i));
+            }
+        }
+        // update entire model list
+        List<List<C>> cellItems = new ArrayList<>();
+        for (int i=0; i < mItemList.size(); i++) {
+            List<C> rowList = new ArrayList<>((List<C>) mItemList.get(i));
+            // add new column item to rowList
+            if (column < rowList.size()) {
+                rowList.add(column, cellColumnItems.get(i));
+            } else {
+                rowList.add(cellColumnItems.get(i));
+            }
+            cellItems.add(rowList);
+        }
+        // TODO see if notifying the adapter is necessary or not in this case
+        // update dataset without notifying adapter (?) since individual cell row adapters already notified
         setItems((List<C>) cellItems, false);
     }
 }

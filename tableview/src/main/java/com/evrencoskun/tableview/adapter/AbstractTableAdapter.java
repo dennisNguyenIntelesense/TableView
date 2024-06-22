@@ -382,6 +382,11 @@ public abstract class AbstractTableAdapter<CH, RH, C> implements ITableAdapter<C
         mRowHeaderRecyclerViewAdapter.addItem(rowPosition, rowHeaderItems);
     }
 
+    public void appendRow(@Nullable List<RH> rowHeaderItems, @Nullable List<C> cellItems) {
+        mCellRecyclerViewAdapter.appendItem(cellItems);
+        mRowHeaderRecyclerViewAdapter.appendItem(rowHeaderItems);
+    }
+
     public void addRowRange(int rowPositionStart, @Nullable List<RH> rowHeaderItem, @Nullable List<List<C>> cellItems) {
         mRowHeaderRecyclerViewAdapter.addItemRange(rowPositionStart, rowHeaderItem);
         mCellRecyclerViewAdapter.addItemRange(rowPositionStart, cellItems);
@@ -434,6 +439,11 @@ public abstract class AbstractTableAdapter<CH, RH, C> implements ITableAdapter<C
     public void addColumn(int columnPosition, @Nullable CH columnHeaderItem, @NonNull List<C> cellItems) {
         mColumnHeaderRecyclerViewAdapter.addItem(columnPosition, columnHeaderItem);
         mCellRecyclerViewAdapter.addColumnItems(columnPosition, cellItems);
+    }
+
+    public void newAddColumn(int columnPosition, @Nullable CH columnHeaderItem, @NonNull List<C> cellItems) {
+        mColumnHeaderRecyclerViewAdapter.addItem(columnPosition, columnHeaderItem);
+        mCellRecyclerViewAdapter.newAddColumnItems(columnPosition, cellItems);
     }
 
 

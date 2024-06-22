@@ -63,6 +63,7 @@ import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 /**
  * Created by evrencoskun on 11/06/2017.
@@ -285,23 +286,23 @@ public class TableView extends FrameLayout implements ITableView {
         // Set scroll listener to be able to scroll all rows synchrony.
         mColumnHeaderRecyclerView.addOnItemTouchListener(mHorizontalRecyclerViewListener);
 
-
         // --- Listeners to help item clicks ---
         // Create item click listeners
 
         // Add item click listener for column header recyclerView
         if (mAllowClickInsideColumnHeader) {
-            ColumnHeaderRecyclerViewItemClickListener columnHeaderRecyclerViewItemClickListener = new ColumnHeaderRecyclerViewItemClickListener
-                    (mColumnHeaderRecyclerView, this);
+            ColumnHeaderRecyclerViewItemClickListener columnHeaderRecyclerViewItemClickListener =
+                    new ColumnHeaderRecyclerViewItemClickListener(mColumnHeaderRecyclerView, this);
             mColumnHeaderRecyclerView.addOnItemTouchListener(columnHeaderRecyclerViewItemClickListener);
         }
 
         // Add item click listener for row header recyclerView
-        if (mAllowClickInsideRowHeader) {
-            RowHeaderRecyclerViewItemClickListener rowHeaderRecyclerViewItemClickListener = new RowHeaderRecyclerViewItemClickListener
-                    (mRowHeaderRecyclerView, this);
-            mRowHeaderRecyclerView.addOnItemTouchListener(rowHeaderRecyclerViewItemClickListener);
-        }
+        // TODO uncomment this if we want to use the row header click listener
+//        if (mAllowClickInsideRowHeader) {
+//            RowHeaderRecyclerViewItemClickListener rowHeaderRecyclerViewItemClickListener = new RowHeaderRecyclerViewItemClickListener
+//                    (mRowHeaderRecyclerView, this);
+//            mRowHeaderRecyclerView.addOnItemTouchListener(rowHeaderRecyclerViewItemClickListener);
+//        }
 
 
         // Add Layout change listener both of Column Header  & Cell recyclerView to detect
@@ -359,6 +360,9 @@ public class TableView extends FrameLayout implements ITableView {
         } else {
             layoutParams.topMargin = mColumnHeaderHeight;
         }
+//        // TODO comment this out later if it doesn't work
+//        layoutParams.rightMargin = mRowHeaderWidth;
+
         recyclerView.setLayoutParams(layoutParams);
 
 
