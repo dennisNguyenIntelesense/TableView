@@ -33,11 +33,10 @@ import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
-import android.widget.LinearLayout;
 
 import com.evrencoskun.tableview.adapter.AbstractTableAdapter;
 import com.evrencoskun.tableview.adapter.recyclerview.CellRecyclerView;
-import com.evrencoskun.tableview.adapter.recyclerview.NonScrollableHorizontalCellRecyclerView;
+import com.evrencoskun.tableview.adapter.recyclerview.NonHorizontalScrollCellRecyclerView;
 import com.evrencoskun.tableview.adapter.recyclerview.holder.AbstractViewHolder;
 //import com.evrencoskun.tableview.filter.Filter;
 //import com.evrencoskun.tableview.handler.ColumnSortHandler;
@@ -53,11 +52,9 @@ import com.evrencoskun.tableview.layoutmanager.NonScrollableLinearLayoutManager;
 import com.evrencoskun.tableview.listener.ITableViewListener;
 import com.evrencoskun.tableview.listener.TableViewLayoutChangeListener;
 import com.evrencoskun.tableview.listener.itemclick.ColumnHeaderRecyclerViewItemClickListener;
-import com.evrencoskun.tableview.listener.itemclick.RowHeaderRecyclerViewItemClickListener;
 import com.evrencoskun.tableview.listener.scroll.HorizontalRecyclerViewListener;
 import com.evrencoskun.tableview.listener.scroll.VerticalRecyclerViewListener;
 import com.evrencoskun.tableview.preference.SavedState;
-import com.evrencoskun.tableview.sort.SortState;
 
 import androidx.annotation.AttrRes;
 import androidx.annotation.ColorInt;
@@ -65,8 +62,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 /**
  * Created by evrencoskun on 11/06/2017.
@@ -77,10 +74,6 @@ public class TableView extends FrameLayout implements ITableView {
     protected CellRecyclerView mCellRecyclerView;
     @NonNull
     protected CellRecyclerView mColumnHeaderRecyclerView;
-//    @NonNull
-//    protected CellRecyclerView mRowHeaderRecyclerView;
-
-    // TODO comment this out if it doesn't work
     @NonNull
     protected CellRecyclerView mRowHeaderRecyclerView;
 
@@ -94,10 +87,19 @@ public class TableView extends FrameLayout implements ITableView {
     private HorizontalRecyclerViewListener mHorizontalRecyclerViewListener;
     @NonNull
     private ColumnHeaderLayoutManager mColumnHeaderLayoutManager;
-    @NonNull
+//    @NonNull
     private LinearLayoutManager mRowHeaderLayoutManager;
+
+    // TODO uncomment above row header misalignment attempt fix;
+//    private NonScrollableLinearLayoutManager mRowHeaderLayoutManager;
+
+//    private CellLayoutManager mRowHeaderLayoutManager;
+
+//    private GridLayoutManager mRowHeaderLayoutManager;
+
     @NonNull
     private CellLayoutManager mCellLayoutManager;
+
     @NonNull
     private DividerItemDecoration mVerticalItemDecoration;
     @NonNull
@@ -178,7 +180,7 @@ public class TableView extends FrameLayout implements ITableView {
     private void initialDefaultValues(@Nullable AttributeSet attrs) {
         // Dimensions
         // TODO change layout params
-        mRowHeaderWidth = (int) getResources().getDimension(R.dimen.default_row_header_width) * 4;
+        mRowHeaderWidth = (int) getResources().getDimension(R.dimen.default_row_header_width) * 5;
 //        mRowHeaderWidth = (int) ((int) getResources().getDimension(R.dimen.default_row_header_width) * 3);
 
         mColumnHeaderHeight = (int) getResources().getDimension(R.dimen
@@ -355,8 +357,7 @@ public class TableView extends FrameLayout implements ITableView {
         // TODO uncomment this if below doesn't work
 //        CellRecyclerView recyclerView = new CellRecyclerView(getContext());
 
-        CellRecyclerView recyclerView = new NonScrollableHorizontalCellRecyclerView(getContext());
-
+        CellRecyclerView recyclerView = new NonHorizontalScrollCellRecyclerView(getContext());
 
         // Set layout manager
         recyclerView.setLayoutManager(getRowHeaderLayoutManager());
@@ -372,11 +373,12 @@ public class TableView extends FrameLayout implements ITableView {
         } else {
             layoutParams.topMargin = mColumnHeaderHeight;
         }
-//        // TODO comment this out later if it doesn't work
-//        layoutParams.rightMargin = mRowHeaderWidth;
+        //        // TODO comment this out later if it doesn't work stop misalignment
+        // Constrain the width of the row header to prevent any horizontal movement
+        layoutParams.width = mRowHeaderWidth;
+
 
         recyclerView.setLayoutParams(layoutParams);
-
 
         if (isShowVerticalSeparators()) {
             // Add vertical item decoration to display row line
@@ -384,6 +386,18 @@ public class TableView extends FrameLayout implements ITableView {
         }
 
         return recyclerView;
+    }
+
+    // TODO comment out if this doesn't work; attempt to stop misalignment of row header rows
+    // upon sort + addition
+    public void resetRowHeaderScrollPositions() {
+        // Reset all cell row RecyclerViews to the leftmost position
+        CellRecyclerView[] visibleCellRowRecyclerViews = getCellLayoutManager().getVisibleCellRowRecyclerViews();
+        for (CellRecyclerView recyclerView : visibleCellRowRecyclerViews) {
+            if (recyclerView instanceof NonHorizontalScrollCellRecyclerView) {
+                ((NonHorizontalScrollCellRecyclerView) recyclerView).scrollToLeft();
+            }
+        }
     }
 
     @NonNull
@@ -532,12 +546,28 @@ public class TableView extends FrameLayout implements ITableView {
     public LinearLayoutManager getRowHeaderLayoutManager() {
         if (mRowHeaderLayoutManager == null) {
 
-            // TODO uncomment out old implementation horizontal scrolling disable attempt
+            // TODO uncomment out old implementation horizontal scrolling disable attempt misalignment
 //            mRowHeaderLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager
 //                    .VERTICAL, false);
 
-            mRowHeaderLayoutManager = new NonScrollableLinearLayoutManager(
+//            mRowHeaderLayoutManager = new NonScrollableLinearLayoutManager(
+//                    getContext(),
+//                    this
+//            );
+//
+//            mRowHeaderLayoutManager = new NonScrollableLinearLayoutManager(
+//                    getContext(),
+//                    LinearLayoutManager.VERTICAL,
+//                    false,
+//                    mRowHeaderWidth
+//            );
+
+            // creates nullptr exception for CellRecyclerView.getScrollState
+//            mRowHeaderLayoutManager = new CellLayoutManager(getContext(), this);
+
+            mRowHeaderLayoutManager = new GridLayoutManager(
                     getContext(),
+                    1,
                     LinearLayoutManager.VERTICAL,
                     false
             );

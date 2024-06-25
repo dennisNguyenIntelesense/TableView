@@ -1,16 +1,18 @@
 package com.evrencoskun.tableview.adapter.recyclerview;
 
 import android.content.Context;
-import android.util.AttributeSet;
 import android.view.MotionEvent;
 
-import androidx.recyclerview.widget.RecyclerView;
+/**
+ * rowheader recycler view misalignment attempt
+ */
+public class NonHorizontalScrollCellRecyclerView extends CellRecyclerView {
 
-public class NonScrollableHorizontalCellRecyclerView extends CellRecyclerView {
-
-    public NonScrollableHorizontalCellRecyclerView(Context context) {
+    public NonHorizontalScrollCellRecyclerView(Context context) {
         super(context);
     }
+
+
 
 //    public NonScrollableHorizontalCellRecyclerView(Context context, AttributeSet attrs) {
 //        super(context, attrs);
@@ -44,4 +46,8 @@ public class NonScrollableHorizontalCellRecyclerView extends CellRecyclerView {
 
     private float mInitialX;
     private float mInitialY;
+
+    public void scrollToLeft() {
+        scrollToPosition(0);  // Scroll to the leftmost position
+    }
 }

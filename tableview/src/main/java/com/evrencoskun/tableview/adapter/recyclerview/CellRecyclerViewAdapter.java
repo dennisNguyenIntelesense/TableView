@@ -83,6 +83,16 @@ public class CellRecyclerViewAdapter<C> extends AbstractRecyclerViewAdapter<C> {
         return adapters;
     }
 
+    // doesn't work
+//    public void resetRowHeaderScrollPositions() {
+//        for (int i=0; i < mItemList.size(); i++) {
+//            RecyclerView cellRowRecyclerView = (RecyclerView) mTableView.getCellLayoutManager().findViewByPosition(i);
+//            if (cellRowRecyclerView != null) {
+//                cellRowRecyclerView.scrollToPosition(0);
+//            }
+//        }
+//    }
+
     @NonNull
     @Override
     public AbstractViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
