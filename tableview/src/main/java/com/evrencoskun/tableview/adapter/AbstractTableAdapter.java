@@ -182,7 +182,8 @@ public abstract class AbstractTableAdapter<CH, RH, C> implements ITableAdapter<C
             updateCornerViewState(columnHeaderItems, zerothRowHeaders);
     }
 
-    private void updateCornerViewState(
+    // TODO make this private again
+    public void updateCornerViewState(
             @Nullable List<CH> columnHeaderItems,
             @Nullable List<RH> rowHeaderItems
     ) {
@@ -218,9 +219,12 @@ public abstract class AbstractTableAdapter<CH, RH, C> implements ITableAdapter<C
 
         if (needCornerSpace) {
             mCornerView.setVisibility(View.VISIBLE);
-        } else {
-            mCornerView.setVisibility(View.GONE);
         }
+       // TODO uncomment this out corner view manipulation
+//        else {
+//            mCornerView.setVisibility(View.GONE);
+//        }
+
     }
 
     @Override
@@ -271,14 +275,14 @@ public abstract class AbstractTableAdapter<CH, RH, C> implements ITableAdapter<C
     }
 
     // TODO see if this properly resets the corner box dimensions
-    public void setCornerViewDimensions(int width, int height) {
-        setRowHeaderWidth(width);
-
-        if (mCornerView != null) {
-            ViewGroup.LayoutParams layoutParams = mCornerView.getLayoutParams();
-            layoutParams.height = height;
-        }
-    }
+//    public void setCornerViewDimensions(int width, int height) {
+//        setRowHeaderWidth(width);
+//
+//        if (mCornerView != null) {
+//            ViewGroup.LayoutParams layoutParams = mCornerView.getLayoutParams();
+//            layoutParams.height = height;
+//        }
+//    }
 
     public void setColumnHeaderHeight(int columnHeaderHeight) {
         this.mColumnHeaderHeight = columnHeaderHeight;

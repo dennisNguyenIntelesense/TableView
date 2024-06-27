@@ -83,6 +83,19 @@ public class CellRecyclerViewAdapter<C> extends AbstractRecyclerViewAdapter<C> {
         return adapters;
     }
 
+    public List<CellRowRecyclerViewAdapter> getAllRowHeaderAdapters() {
+        List<CellRowRecyclerViewAdapter> adapters = new ArrayList<>();
+        for (int i=0; i < mItemList.size(); i++) {
+            RecyclerView cellRowRecyclerView = (RecyclerView) mTableView.getRowHeaderLayoutManager().findViewByPosition(i);
+
+            if (cellRowRecyclerView != null) {
+                CellRowRecyclerViewAdapter adapter = ((CellRowRecyclerViewAdapter) cellRowRecyclerView.getAdapter());
+                adapters.add(adapter);
+            }
+        }
+        return adapters;
+    }
+
     // doesn't work
 //    public void resetRowHeaderScrollPositions() {
 //        for (int i=0; i < mItemList.size(); i++) {
