@@ -70,31 +70,31 @@ public class CellRecyclerViewAdapter<C> extends AbstractRecyclerViewAdapter<C> {
         //mRecycledViewPool.setMaxRecycledViews(0, 110);
     }
 
-    public List<CellRowRecyclerViewAdapter> getAllRowAdapters() {
-        List<CellRowRecyclerViewAdapter> adapters = new ArrayList<>();
-        for (int i=0; i < mItemList.size(); i++) {
-            RecyclerView cellRowRecyclerView = (RecyclerView) mTableView.getCellLayoutManager().findViewByPosition(i);
-
-            if (cellRowRecyclerView != null) {
-                CellRowRecyclerViewAdapter adapter = ((CellRowRecyclerViewAdapter) cellRowRecyclerView.getAdapter());
-                adapters.add(adapter);
-            }
-        }
-        return adapters;
-    }
-
-    public List<CellRowRecyclerViewAdapter> getAllRowHeaderAdapters() {
-        List<CellRowRecyclerViewAdapter> adapters = new ArrayList<>();
-        for (int i=0; i < mItemList.size(); i++) {
-            RecyclerView cellRowRecyclerView = (RecyclerView) mTableView.getRowHeaderLayoutManager().findViewByPosition(i);
-
-            if (cellRowRecyclerView != null) {
-                CellRowRecyclerViewAdapter adapter = ((CellRowRecyclerViewAdapter) cellRowRecyclerView.getAdapter());
-                adapters.add(adapter);
-            }
-        }
-        return adapters;
-    }
+//    public List<CellRowRecyclerViewAdapter> getAllRowAdapters() {
+//        List<CellRowRecyclerViewAdapter> adapters = new ArrayList<>();
+//        for (int i=0; i < mItemList.size(); i++) {
+//            RecyclerView cellRowRecyclerView = (RecyclerView) mTableView.getCellLayoutManager().findViewByPosition(i);
+//
+//            if (cellRowRecyclerView != null) {
+//                CellRowRecyclerViewAdapter adapter = ((CellRowRecyclerViewAdapter) cellRowRecyclerView.getAdapter());
+//                adapters.add(adapter);
+//            }
+//        }
+//        return adapters;
+//    }
+//
+//    public List<CellRowRecyclerViewAdapter> getAllRowHeaderAdapters() {
+//        List<CellRowRecyclerViewAdapter> adapters = new ArrayList<>();
+//        for (int i=0; i < mItemList.size(); i++) {
+//            RecyclerView cellRowRecyclerView = (RecyclerView) mTableView.getRowHeaderLayoutManager().findViewByPosition(i);
+//
+//            if (cellRowRecyclerView != null) {
+//                CellRowRecyclerViewAdapter adapter = ((CellRowRecyclerViewAdapter) cellRowRecyclerView.getAdapter());
+//                adapters.add(adapter);
+//            }
+//        }
+//        return adapters;
+//    }
 
     // doesn't work
 //    public void resetRowHeaderScrollPositions() {
