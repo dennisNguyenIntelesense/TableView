@@ -60,6 +60,8 @@ public class CellRecyclerViewAdapter<C> extends AbstractRecyclerViewAdapter<C> {
     // This is for testing purpose
     private int mRecyclerViewId = 0;
 
+    private ArrayList<CellRowRecyclerViewAdapter<C>> cellRowAdapters = new ArrayList<>();
+
     public CellRecyclerViewAdapter(@NonNull Context context, @Nullable List<C> itemList, @NonNull ITableView tableView) {
         super(context, itemList);
         this.mTableView = tableView;
@@ -70,41 +72,10 @@ public class CellRecyclerViewAdapter<C> extends AbstractRecyclerViewAdapter<C> {
         //mRecycledViewPool.setMaxRecycledViews(0, 110);
     }
 
-//    public List<CellRowRecyclerViewAdapter> getAllRowAdapters() {
-//        List<CellRowRecyclerViewAdapter> adapters = new ArrayList<>();
-//        for (int i=0; i < mItemList.size(); i++) {
-//            RecyclerView cellRowRecyclerView = (RecyclerView) mTableView.getCellLayoutManager().findViewByPosition(i);
-//
-//            if (cellRowRecyclerView != null) {
-//                CellRowRecyclerViewAdapter adapter = ((CellRowRecyclerViewAdapter) cellRowRecyclerView.getAdapter());
-//                adapters.add(adapter);
-//            }
-//        }
-//        return adapters;
-//    }
-//
-//    public List<CellRowRecyclerViewAdapter> getAllRowHeaderAdapters() {
-//        List<CellRowRecyclerViewAdapter> adapters = new ArrayList<>();
-//        for (int i=0; i < mItemList.size(); i++) {
-//            RecyclerView cellRowRecyclerView = (RecyclerView) mTableView.getRowHeaderLayoutManager().findViewByPosition(i);
-//
-//            if (cellRowRecyclerView != null) {
-//                CellRowRecyclerViewAdapter adapter = ((CellRowRecyclerViewAdapter) cellRowRecyclerView.getAdapter());
-//                adapters.add(adapter);
-//            }
-//        }
-//        return adapters;
-//    }
-
-    // doesn't work
-//    public void resetRowHeaderScrollPositions() {
-//        for (int i=0; i < mItemList.size(); i++) {
-//            RecyclerView cellRowRecyclerView = (RecyclerView) mTableView.getCellLayoutManager().findViewByPosition(i);
-//            if (cellRowRecyclerView != null) {
-//                cellRowRecyclerView.scrollToPosition(0);
-//            }
-//        }
-//    }
+    // TODO new attempt to grab row recycler view adapters;
+    public List<CellRowRecyclerViewAdapter<C>> getCellRowAdapters() {
+        return cellRowAdapters;
+    }
 
     @NonNull
     @Override
@@ -141,8 +112,11 @@ public class CellRecyclerViewAdapter<C> extends AbstractRecyclerViewAdapter<C> {
         if (mTableView.getReverseLayout()) mColumnLayoutManager.setReverseLayout(true);
         recyclerView.setLayoutManager(mColumnLayoutManager);
 
+        CellRowRecyclerViewAdapter newRowAdapter = new CellRowRecyclerViewAdapter<>(mContext, mTableView);
         // Create CellRow adapter
-        recyclerView.setAdapter(new CellRowRecyclerViewAdapter<>(mContext, mTableView));
+        recyclerView.setAdapter(newRowAdapter);
+
+        cellRowAdapters.add(newRowAdapter);
 
         // This is for testing purpose to find out which recyclerView is displayed.
         recyclerView.setId(mRecyclerViewId);
