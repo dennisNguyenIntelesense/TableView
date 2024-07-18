@@ -355,7 +355,7 @@ public class TableView extends FrameLayout implements ITableView {
     @NonNull
     protected CellRecyclerView createRowHeaderRecyclerView() {
         // TODO uncomment this if below doesn't work
-//        CellRecyclerView recyclerView = new CellRecyclerView(getContext());
+        //CellRecyclerView recyclerView = new CellRecyclerView(getContext());
 
         CellRecyclerView recyclerView = new NonHorizontalScrollCellRecyclerView(getContext());
 
@@ -541,6 +541,17 @@ public class TableView extends FrameLayout implements ITableView {
         return mCellLayoutManager;
     }
 
+    public static class NonHorizontalScrollGridLayoutManager extends GridLayoutManager {
+        public NonHorizontalScrollGridLayoutManager(Context context, int spanCount) {
+            super(context, spanCount);
+        }
+
+        @Override
+        public boolean canScrollHorizontally() {
+            return false;
+        }
+    }
+
     @NonNull
     @Override
     public LinearLayoutManager getRowHeaderLayoutManager() {
@@ -565,11 +576,9 @@ public class TableView extends FrameLayout implements ITableView {
             // creates nullptr exception for CellRecyclerView.getScrollState
 //            mRowHeaderLayoutManager = new CellLayoutManager(getContext(), this);
 
-            mRowHeaderLayoutManager = new GridLayoutManager(
+            mRowHeaderLayoutManager = new NonHorizontalScrollGridLayoutManager(
                     getContext(),
-                    1,
-                    LinearLayoutManager.VERTICAL,
-                    false
+                    1
             );
         }
         return mRowHeaderLayoutManager;
