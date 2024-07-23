@@ -180,7 +180,7 @@ public class TableView extends FrameLayout implements ITableView {
     private void initialDefaultValues(@Nullable AttributeSet attrs) {
         // Dimensions
         // TODO change layout params
-        mRowHeaderWidth = (int) getResources().getDimension(R.dimen.default_row_header_width) * 5;
+        mRowHeaderWidth = (int) getResources().getDimension(R.dimen.default_row_header_width) * 3;
 //        mRowHeaderWidth = (int) ((int) getResources().getDimension(R.dimen.default_row_header_width) * 3);
 
         mColumnHeaderHeight = (int) getResources().getDimension(R.dimen
@@ -348,6 +348,10 @@ public class TableView extends FrameLayout implements ITableView {
             // Add vertical item decoration to display column line
             recyclerView.addItemDecoration(getHorizontalItemDecoration());
         }
+        if (isShowVerticalSeparators()) {
+            // Add horizontal item decoration to display row line
+            recyclerView.addItemDecoration(getVerticalItemDecoration());
+        }
 
         return recyclerView;
     }
@@ -383,6 +387,10 @@ public class TableView extends FrameLayout implements ITableView {
         if (isShowVerticalSeparators()) {
             // Add vertical item decoration to display row line
             recyclerView.addItemDecoration(getVerticalItemDecoration());
+        }
+        if (isShowHorizontalSeparators()) {
+            // Add horizontal item decoration to display row line
+            recyclerView.addItemDecoration(getHorizontalItemDecoration());
         }
 
         return recyclerView;
