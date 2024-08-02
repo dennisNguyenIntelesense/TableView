@@ -33,7 +33,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.evrencoskun.tableview.adapter.AbstractTableAdapter;
+import com.evrencoskun.tableview.adapter.recyclerview.CellRowRecyclerViewAdapter;
 import com.evrencoskun.tableview.adapter.recyclerview.holder.AbstractViewHolder;
+import com.evrencoskun.tableview.listener.ITableViewListener;
 import com.evrencoskun.tableview.sort.SortState;
 import com.evrencoskun.tableviewsample.R;
 import com.evrencoskun.tableviewsample.tableview.holder.CellViewHolder;

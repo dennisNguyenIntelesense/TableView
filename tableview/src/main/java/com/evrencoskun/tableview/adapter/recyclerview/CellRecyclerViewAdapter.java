@@ -40,6 +40,7 @@ import com.evrencoskun.tableview.handler.ScrollHandler;
 import com.evrencoskun.tableview.handler.SelectionHandler;
 import com.evrencoskun.tableview.layoutmanager.CellLayoutManager;
 import com.evrencoskun.tableview.layoutmanager.ColumnLayoutManager;
+import com.evrencoskun.tableview.listener.ITableViewListener;
 import com.evrencoskun.tableview.listener.itemclick.CellRecyclerViewItemClickListener;
 
 import java.util.ArrayList;
@@ -62,6 +63,8 @@ public class CellRecyclerViewAdapter<C> extends AbstractRecyclerViewAdapter<C> {
 
     private ArrayList<CellRowRecyclerViewAdapter<C>> cellRowAdapters = new ArrayList<>();
 
+    private ITableViewListener tableClickListener;
+
     public CellRecyclerViewAdapter(@NonNull Context context, @Nullable List<C> itemList, @NonNull ITableView tableView) {
         super(context, itemList);
         this.mTableView = tableView;
@@ -71,6 +74,8 @@ public class CellRecyclerViewAdapter<C> extends AbstractRecyclerViewAdapter<C> {
         //TODO set the right value.
         //mRecycledViewPool.setMaxRecycledViews(0, 110);
     }
+
+    public void setTableListener(ITableViewListener tableClickListener) { this.tableClickListener = tableClickListener; }
 
     // TODO new attempt to grab row recycler view adapters;
     public List<CellRowRecyclerViewAdapter<C>> getCellRowAdapters() {
@@ -113,6 +118,7 @@ public class CellRecyclerViewAdapter<C> extends AbstractRecyclerViewAdapter<C> {
         recyclerView.setLayoutManager(mColumnLayoutManager);
 
         CellRowRecyclerViewAdapter newRowAdapter = new CellRowRecyclerViewAdapter<>(mContext, mTableView);
+//        newRowAdapter.setOnCellClickListener(tableClickListener);
         // Create CellRow adapter
         recyclerView.setAdapter(newRowAdapter);
 
@@ -132,6 +138,10 @@ public class CellRecyclerViewAdapter<C> extends AbstractRecyclerViewAdapter<C> {
         CellRowRecyclerViewAdapter viewAdapter = (CellRowRecyclerViewAdapter) viewHolder
                 .recyclerView.getAdapter();
 
+//        if(rowClickListener != null) {
+//            viewHolder.bind(rowClickListener, yPosition);
+//        }
+
         // Get the list
         List<C> rowList = (List<C>) mItemList.get(yPosition);
 
@@ -140,6 +150,13 @@ public class CellRecyclerViewAdapter<C> extends AbstractRecyclerViewAdapter<C> {
 
         // Set the list to the adapter
         viewAdapter.setItems(rowList);
+
+//        // Set the click listener
+//        holder.itemView.setOnClickListener(v -> {
+//            if (rowClickListener != null) {
+//                rowClickListener.onCellClicked(holder, yPosition);  //Note: Even though yPosition is passed instead of xPosition, the logic will be altered in override from main project
+//            }
+//        });
     }
 
     @Override
@@ -177,7 +194,7 @@ public class CellRecyclerViewAdapter<C> extends AbstractRecyclerViewAdapter<C> {
             selectionHandler.changeSelectionOfRecyclerView(viewHolder.recyclerView,
                     SelectionState.SELECTED, mTableView.getSelectedColor());
         }
-
+        //updateVisibleAdapters();
     }
 
     @Override
@@ -187,6 +204,8 @@ public class CellRecyclerViewAdapter<C> extends AbstractRecyclerViewAdapter<C> {
         // Clear selection status of the view holder
         mTableView.getSelectionHandler().changeSelectionOfRecyclerView(((CellRowViewHolder)
                 holder).recyclerView, SelectionState.UNSELECTED, mTableView.getUnSelectedColor());
+
+        //updateVisibleAdapters();
     }
 
     @Override
@@ -210,7 +229,23 @@ public class CellRecyclerViewAdapter<C> extends AbstractRecyclerViewAdapter<C> {
             super(itemView);
             recyclerView = (CellRecyclerView) itemView;
         }
+
     }
+
+    @Override
+    public void onAttachedToRecyclerView(@NonNull RecyclerView recyclerView) {
+        super.onAttachedToRecyclerView(recyclerView);
+
+        // Add the scroll listener here
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                //updateVisibleAdapters();
+            }
+        });
+    }
+
 
     public void notifyCellDataSetChanged() {
         CellRecyclerView[] visibleRecyclerViews = mTableView.getCellLayoutManager()
