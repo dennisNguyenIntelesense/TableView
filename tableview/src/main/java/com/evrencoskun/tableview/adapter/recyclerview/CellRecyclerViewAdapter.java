@@ -105,10 +105,10 @@ public class CellRecyclerViewAdapter<C> extends AbstractRecyclerViewAdapter<C> {
 
         // Add Item click listener for cell views
         // TODO turn back addOnItemTouchListener?
-//        if (mTableView.isAllowClickInsideCell()) {
-//            recyclerView.addOnItemTouchListener(new CellRecyclerViewItemClickListener(recyclerView,
-//                    mTableView));
-//        }
+        if (mTableView.isAllowClickInsideCell()) {
+            recyclerView.addOnItemTouchListener(new CellRecyclerViewItemClickListener(recyclerView,
+                    mTableView));
+        }
 
         // Set the Column layout manager that helps the fit width of the cell and column header
         // and it also helps to locate the scroll position of the horizontal recyclerView
