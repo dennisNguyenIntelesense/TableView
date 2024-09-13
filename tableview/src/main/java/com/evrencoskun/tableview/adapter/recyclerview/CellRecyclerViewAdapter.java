@@ -25,7 +25,6 @@
 package com.evrencoskun.tableview.adapter.recyclerview;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -45,7 +44,6 @@ import com.evrencoskun.tableview.listener.itemclick.CellRecyclerViewItemClickLis
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * Created by evrencoskun on 10/06/2017.
@@ -61,7 +59,7 @@ public class CellRecyclerViewAdapter<C> extends AbstractRecyclerViewAdapter<C> {
     // This is for testing purpose
     private int mRecyclerViewId = 0;
 
-    private ArrayList<CellRowRecyclerViewAdapter<C>> cellRowAdapters = new ArrayList<>();
+    private ArrayList<CellRowRecyclerViewAdapter<C>> currentlyBoundCellRowAdapters = new ArrayList<>();
 
     private ITableViewListener tableClickListener;
 
@@ -78,8 +76,8 @@ public class CellRecyclerViewAdapter<C> extends AbstractRecyclerViewAdapter<C> {
     public void setTableListener(ITableViewListener tableClickListener) { this.tableClickListener = tableClickListener; }
 
     // TODO new attempt to grab row recycler view adapters;
-    public List<CellRowRecyclerViewAdapter<C>> getCellRowAdapters() {
-        return cellRowAdapters;
+    public List<CellRowRecyclerViewAdapter<C>> getCurrentlyBoundCellRowAdapters() {
+        return currentlyBoundCellRowAdapters;
     }
 
     @NonNull
@@ -122,8 +120,6 @@ public class CellRecyclerViewAdapter<C> extends AbstractRecyclerViewAdapter<C> {
         // Create CellRow adapter
         recyclerView.setAdapter(newRowAdapter);
 
-        cellRowAdapters.add(newRowAdapter);
-
         // This is for testing purpose to find out which recyclerView is displayed.
         recyclerView.setId(mRecyclerViewId);
 
@@ -150,6 +146,10 @@ public class CellRecyclerViewAdapter<C> extends AbstractRecyclerViewAdapter<C> {
 
         // Set the list to the adapter
         viewAdapter.setItems(rowList);
+
+        if ((!currentlyBoundCellRowAdapters.contains(viewAdapter))) {
+            currentlyBoundCellRowAdapters.add(viewAdapter);
+        }
 
 //        // Set the click listener
 //        holder.itemView.setOnClickListener(v -> {
