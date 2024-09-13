@@ -31,7 +31,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.evrencoskun.tableview.ITableView;
+import com.evrencoskun.tableview.adapter.recyclerview.CellRowRecyclerViewAdapter;
 import com.evrencoskun.tableview.adapter.recyclerview.holder.AbstractViewHolder;
+import com.evrencoskun.tableview.listener.ITableViewListener;
 
 /**
  * Created by evrencoskun on 10/06/2017.

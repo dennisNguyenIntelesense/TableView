@@ -124,10 +124,10 @@ public class TableViewListener implements ITableViewListener {
      * @param columnHeaderView : Long Pressed Column Header ViewHolder.
      * @param column           : X (Column) position of Long Pressed Column Header item.
      */
-//    @Override
-//    public void onColumnHeaderLongPressed(@NonNull RecyclerView.ViewHolder columnHeaderView, int
-//            column) {
-//
+    @Override
+    public void onColumnHeaderLongPressed(@NonNull RecyclerView.ViewHolder columnHeaderView, int
+            column) {
+
 //        if (columnHeaderView instanceof ColumnHeaderViewHolder) {
 //            // Create Long Press Popup
 //            ColumnHeaderLongPressPopup popup = new ColumnHeaderLongPressPopup(
@@ -135,7 +135,7 @@ public class TableViewListener implements ITableViewListener {
 //            // Show
 //            popup.show();
 //        }
-//    }
+    }
 
     /**
      * Called when user click any Row Header item.

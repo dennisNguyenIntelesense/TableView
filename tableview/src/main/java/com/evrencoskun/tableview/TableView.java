@@ -36,6 +36,7 @@ import android.widget.FrameLayout;
 
 import com.evrencoskun.tableview.adapter.AbstractTableAdapter;
 import com.evrencoskun.tableview.adapter.recyclerview.CellRecyclerView;
+import com.evrencoskun.tableview.adapter.recyclerview.NonHorizontalScrollCellRecyclerView;
 import com.evrencoskun.tableview.adapter.recyclerview.holder.AbstractViewHolder;
 //import com.evrencoskun.tableview.filter.Filter;
 //import com.evrencoskun.tableview.handler.ColumnSortHandler;
@@ -47,14 +48,13 @@ import com.evrencoskun.tableview.handler.SelectionHandler;
 import com.evrencoskun.tableview.handler.VisibilityHandler;
 import com.evrencoskun.tableview.layoutmanager.CellLayoutManager;
 import com.evrencoskun.tableview.layoutmanager.ColumnHeaderLayoutManager;
+import com.evrencoskun.tableview.layoutmanager.NonScrollableLinearLayoutManager;
 import com.evrencoskun.tableview.listener.ITableViewListener;
 import com.evrencoskun.tableview.listener.TableViewLayoutChangeListener;
 import com.evrencoskun.tableview.listener.itemclick.ColumnHeaderRecyclerViewItemClickListener;
-import com.evrencoskun.tableview.listener.itemclick.RowHeaderRecyclerViewItemClickListener;
 import com.evrencoskun.tableview.listener.scroll.HorizontalRecyclerViewListener;
 import com.evrencoskun.tableview.listener.scroll.VerticalRecyclerViewListener;
 import com.evrencoskun.tableview.preference.SavedState;
-import com.evrencoskun.tableview.sort.SortState;
 
 import androidx.annotation.AttrRes;
 import androidx.annotation.ColorInt;
@@ -62,6 +62,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 /**
@@ -75,6 +76,7 @@ public class TableView extends FrameLayout implements ITableView {
     protected CellRecyclerView mColumnHeaderRecyclerView;
     @NonNull
     protected CellRecyclerView mRowHeaderRecyclerView;
+
     @Nullable
     protected AbstractTableAdapter mTableAdapter;
     @Nullable
@@ -85,10 +87,19 @@ public class TableView extends FrameLayout implements ITableView {
     private HorizontalRecyclerViewListener mHorizontalRecyclerViewListener;
     @NonNull
     private ColumnHeaderLayoutManager mColumnHeaderLayoutManager;
-    @NonNull
+//    @NonNull
     private LinearLayoutManager mRowHeaderLayoutManager;
+
+    // TODO uncomment above row header misalignment attempt fix;
+//    private NonScrollableLinearLayoutManager mRowHeaderLayoutManager;
+
+//    private CellLayoutManager mRowHeaderLayoutManager;
+
+//    private GridLayoutManager mRowHeaderLayoutManager;
+
     @NonNull
     private CellLayoutManager mCellLayoutManager;
+
     @NonNull
     private DividerItemDecoration mVerticalItemDecoration;
     @NonNull
@@ -169,7 +180,7 @@ public class TableView extends FrameLayout implements ITableView {
     private void initialDefaultValues(@Nullable AttributeSet attrs) {
         // Dimensions
         // TODO change layout params
-        mRowHeaderWidth = (int) getResources().getDimension(R.dimen.default_row_header_width) * 4;
+        mRowHeaderWidth = (int) getResources().getDimension(R.dimen.default_row_header_width) * 3;
 //        mRowHeaderWidth = (int) ((int) getResources().getDimension(R.dimen.default_row_header_width) * 3);
 
         mColumnHeaderHeight = (int) getResources().getDimension(R.dimen
@@ -285,23 +296,23 @@ public class TableView extends FrameLayout implements ITableView {
         // Set scroll listener to be able to scroll all rows synchrony.
         mColumnHeaderRecyclerView.addOnItemTouchListener(mHorizontalRecyclerViewListener);
 
-
         // --- Listeners to help item clicks ---
         // Create item click listeners
 
         // Add item click listener for column header recyclerView
         if (mAllowClickInsideColumnHeader) {
-            ColumnHeaderRecyclerViewItemClickListener columnHeaderRecyclerViewItemClickListener = new ColumnHeaderRecyclerViewItemClickListener
-                    (mColumnHeaderRecyclerView, this);
+            ColumnHeaderRecyclerViewItemClickListener columnHeaderRecyclerViewItemClickListener =
+                    new ColumnHeaderRecyclerViewItemClickListener(mColumnHeaderRecyclerView, this);
             mColumnHeaderRecyclerView.addOnItemTouchListener(columnHeaderRecyclerViewItemClickListener);
         }
 
         // Add item click listener for row header recyclerView
-        if (mAllowClickInsideRowHeader) {
-            RowHeaderRecyclerViewItemClickListener rowHeaderRecyclerViewItemClickListener = new RowHeaderRecyclerViewItemClickListener
-                    (mRowHeaderRecyclerView, this);
-            mRowHeaderRecyclerView.addOnItemTouchListener(rowHeaderRecyclerViewItemClickListener);
-        }
+        // TODO uncomment this if we want to use the row header click listener
+//        if (mAllowClickInsideRowHeader) {
+//            RowHeaderRecyclerViewItemClickListener rowHeaderRecyclerViewItemClickListener = new RowHeaderRecyclerViewItemClickListener
+//                    (mRowHeaderRecyclerView, this);
+//            mRowHeaderRecyclerView.addOnItemTouchListener(rowHeaderRecyclerViewItemClickListener);
+//        }
 
 
         // Add Layout change listener both of Column Header  & Cell recyclerView to detect
@@ -337,13 +348,20 @@ public class TableView extends FrameLayout implements ITableView {
             // Add vertical item decoration to display column line
             recyclerView.addItemDecoration(getHorizontalItemDecoration());
         }
+        if (isShowVerticalSeparators()) {
+            // Add horizontal item decoration to display row line
+            recyclerView.addItemDecoration(getVerticalItemDecoration());
+        }
 
         return recyclerView;
     }
 
     @NonNull
     protected CellRecyclerView createRowHeaderRecyclerView() {
-        CellRecyclerView recyclerView = new CellRecyclerView(getContext());
+        // TODO uncomment this if below doesn't work
+        //CellRecyclerView recyclerView = new CellRecyclerView(getContext());
+
+        CellRecyclerView recyclerView = new NonHorizontalScrollCellRecyclerView(getContext());
 
         // Set layout manager
         recyclerView.setLayoutManager(getRowHeaderLayoutManager());
@@ -359,15 +377,35 @@ public class TableView extends FrameLayout implements ITableView {
         } else {
             layoutParams.topMargin = mColumnHeaderHeight;
         }
-        recyclerView.setLayoutParams(layoutParams);
+        //        // TODO comment this out later if it doesn't work stop misalignment
+        // Constrain the width of the row header to prevent any horizontal movement
+        layoutParams.width = mRowHeaderWidth;
 
+
+        recyclerView.setLayoutParams(layoutParams);
 
         if (isShowVerticalSeparators()) {
             // Add vertical item decoration to display row line
             recyclerView.addItemDecoration(getVerticalItemDecoration());
         }
+        if (isShowHorizontalSeparators()) {
+            // Add horizontal item decoration to display row line
+            recyclerView.addItemDecoration(getHorizontalItemDecoration());
+        }
 
         return recyclerView;
+    }
+
+    // TODO comment out if this doesn't work; attempt to stop misalignment of row header rows
+    // upon sort + addition
+    public void resetRowHeaderScrollPositions() {
+        // Reset all cell row RecyclerViews to the leftmost position
+        CellRecyclerView[] visibleCellRowRecyclerViews = getCellLayoutManager().getVisibleCellRowRecyclerViews();
+        for (CellRecyclerView recyclerView : visibleCellRowRecyclerViews) {
+            if (recyclerView instanceof NonHorizontalScrollCellRecyclerView) {
+                ((NonHorizontalScrollCellRecyclerView) recyclerView).scrollToLeft();
+            }
+        }
     }
 
     @NonNull
@@ -511,12 +549,45 @@ public class TableView extends FrameLayout implements ITableView {
         return mCellLayoutManager;
     }
 
+    public static class NonHorizontalScrollGridLayoutManager extends GridLayoutManager {
+        public NonHorizontalScrollGridLayoutManager(Context context, int spanCount) {
+            super(context, spanCount);
+        }
+
+        @Override
+        public boolean canScrollHorizontally() {
+            return false;
+        }
+    }
+
     @NonNull
     @Override
     public LinearLayoutManager getRowHeaderLayoutManager() {
         if (mRowHeaderLayoutManager == null) {
-            mRowHeaderLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager
-                    .VERTICAL, false);
+
+            // TODO uncomment out old implementation horizontal scrolling disable attempt misalignment
+//            mRowHeaderLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager
+//                    .VERTICAL, false);
+
+//            mRowHeaderLayoutManager = new NonScrollableLinearLayoutManager(
+//                    getContext(),
+//                    this
+//            );
+//
+//            mRowHeaderLayoutManager = new NonScrollableLinearLayoutManager(
+//                    getContext(),
+//                    LinearLayoutManager.VERTICAL,
+//                    false,
+//                    mRowHeaderWidth
+//            );
+
+            // creates nullptr exception for CellRecyclerView.getScrollState
+//            mRowHeaderLayoutManager = new CellLayoutManager(getContext(), this);
+
+            mRowHeaderLayoutManager = new NonHorizontalScrollGridLayoutManager(
+                    getContext(),
+                    1
+            );
         }
         return mRowHeaderLayoutManager;
     }
